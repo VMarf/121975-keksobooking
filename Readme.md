@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Владислав Марфин](https://up.htmlacademy.ru/javascript/10/user/121975).
-* Наставник: [Сергей Буртылёв](https://htmlacademy.ru/profile/id3341).
+* Наставник: [Сергей Буртылёв](https://up.htmlacademy.ru/javascript/10/user/3341).
 
 ---
 
