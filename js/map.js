@@ -15,7 +15,7 @@ var similarAds = [];
 var getValueFromRange = function (minValue, maxValue) {
   var valueFromRange;
 
-  valueFromRange = Math.round(minValue - 0.5 + Math.random() * (maxValue - minValue + 1));
+  valueFromRange = Math.floor(Math.random() * (maxValue - minValue + 1) + minValue);
 
   return valueFromRange;
 };
@@ -35,6 +35,10 @@ var shuffleArray = function (array) {
     var randomIndex = Math.floor(Math.random() * (i + 1));
     var randomIndexValue = newArray[randomIndex];
 
+    if (randomIndex === i) {
+      continue;
+    }
+
     newArray[randomIndex] = newArray[i];
     newArray[i] = randomIndexValue;
   }
@@ -49,6 +53,10 @@ var newArrayRandomLength = function (array) {
   for (var i = newArray.length - 1; i > 0; i--) {
     var randomIndex = Math.floor(Math.random() * (i + 1));
     var randomIndexValue = newArray[randomIndex];
+
+    if (randomIndex === i) {
+      continue;
+    }
 
     newArray[randomIndex] = newArray[i];
     newArray[i] = randomIndexValue;
