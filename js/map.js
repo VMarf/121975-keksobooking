@@ -3,6 +3,7 @@
 // Сколько объявлений необходимо создать
 var NUMBER_OF_ADS = 8;
 
+var AD_AVATARS = ['img/avatars/user01.png', 'img/avatars/user02.png', 'img/avatars/user03.png', 'img/avatars/user04.png', 'img/avatars/user05.png', 'img/avatars/user06.png', 'img/avatars/user07.png', 'img/avatars/user08.png'];
 var AD_TITLE = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 var AD_TYPE = ['flat', 'house', 'bungalo'];
 var AD_TYPE_MAP = {
@@ -66,15 +67,6 @@ var newArrayRandomLength = function (array) {
   return shuffledArray;
 };
 
-// Получение аватара автора объявления
-var getAuthorAvatar = function (number) {
-  var authorAvatar;
-
-  authorAvatar = 'img/avatars/user0' + number + '.png';
-
-  return authorAvatar;
-};
-
 // Создание элемента списка достоинств в объявлении
 var createFeature = function (featuresArrayValue) {
   var feature = document.createElement('span');
@@ -89,7 +81,7 @@ var createFeature = function (featuresArrayValue) {
 var createSimilarAd = function (adNumber) {
   var similarAd = {
     author: {
-      avatar: getAuthorAvatar(adNumber + 1)
+      avatar: adAvatarsShuffled[adNumber]
     },
     offer: {
       title: adTitleShuffled[adNumber],
@@ -168,6 +160,7 @@ var replaceDialogWindow = function () {
   offerDialog.replaceChild(createDialogWindow(currentAd), offerPanel);
 };
 
+var adAvatarsShuffled = shuffleArray(AD_AVATARS);
 var adTitleShuffled = shuffleArray(AD_TITLE);
 
 // Заполняем массив объявлений
@@ -180,11 +173,3 @@ for (var i = 0; i < NUMBER_OF_ADS; i++) {
 pinsContainer.appendChild(pinsFragment);
 
 replaceDialogWindow();
-
-
-
-var test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-var test2 = newArrayRandomLength(test);
-
-console.log(test);
-console.log(test2);
