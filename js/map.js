@@ -70,11 +70,7 @@ var newArrayRandomLength = function (array) {
 var getAuthorAvatar = function (number) {
   var authorAvatar;
 
-  if (number < 10) {
-    authorAvatar = 'img/avatars/user0' + number + '.png';
-  } else {
-    authorAvatar = 'img/avatars/user' + number + '.png';
-  }
+  authorAvatar = 'img/avatars/user0' + number + '.png';
 
   return authorAvatar;
 };
