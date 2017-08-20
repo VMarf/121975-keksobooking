@@ -46,8 +46,8 @@ var shuffleArray = function (array) {
     var randomIndex = Math.floor(Math.random() * (i + 1));
     var randomIndexValue = newArray[randomIndex];
 
-    while (randomIndex === i) {
-      randomIndex = Math.floor(Math.random() * (i + 1));
+    if (randomIndex === i) {
+      continue;
     }
 
     newArray[randomIndex] = newArray[i];
@@ -65,8 +65,8 @@ var newArrayRandomLength = function (array) {
     var randomIndex = Math.floor(Math.random() * (i + 1));
     var randomIndexValue = newArray[randomIndex];
 
-    while (randomIndex === i) {
-      randomIndex = Math.floor(Math.random() * (i + 1));
+    if (randomIndex === i) {
+      continue;
     }
 
     newArray[randomIndex] = newArray[i];
