@@ -59,23 +59,11 @@ var shuffleArray = function (array) {
 
 // Возвращает новый массив случайной длины, созданный на основе переданного массива
 var newArrayRandomLength = function (array) {
-  var newArray = array.slice();
+  var shuffledArray = shuffleArray(array);
 
-  for (var i = newArray.length - 1; i > 0; i--) {
-    var randomIndex = Math.floor(Math.random() * (i + 1));
-    var randomIndexValue = newArray[randomIndex];
+  shuffledArray.length = getValueFromRange(0, shuffledArray.length);
 
-    if (randomIndex === i) {
-      continue;
-    }
-
-    newArray[randomIndex] = newArray[i];
-    newArray[i] = randomIndexValue;
-  }
-
-  newArray.length = getValueFromRange(0, newArray.length);
-
-  return newArray;
+  return shuffledArray;
 };
 
 // Получение аватара автора объявления
@@ -195,3 +183,11 @@ for (var i = 0; i < NUMBER_OF_ADS; i++) {
 pinsContainer.appendChild(pinsFragment);
 
 replaceDialogWindow();
+
+
+
+var test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+var test2 = newArrayRandomLength(test);
+
+console.log(test);
+console.log(test2);
