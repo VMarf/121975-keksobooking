@@ -114,7 +114,8 @@ var createPin = function (adInfo) {
   newPin.appendChild(newPinImage);
 
   newPin.classList.add('pin');
-  newPin.setAttribute('style', 'left: ' + adInfo.location.x + 'px; top: ' + adInfo.location.y + 'px');
+  newPin.style.top = adInfo.location.y + 'px';
+  newPin.style.left = adInfo.location.x + 'px';
 
   newPinImage.classList.add('rounded');
   newPinImage.setAttribute('src', adInfo.author.avatar);
