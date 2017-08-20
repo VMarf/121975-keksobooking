@@ -22,6 +22,7 @@ var pinsContainer = document.querySelector('.tokyo__pin-map');
 var pinsFragment = document.createDocumentFragment();
 var offerDialog = document.querySelector('#offer-dialog');
 var offerPanel = offerDialog.querySelector('.dialog__panel');
+var adAuthorAvatar = offerDialog.querySelector('.dialog__title img');
 
 // Возвращает случайное число из заданного диапазона
 var getValueFromRange = function (minValue, maxValue) {
@@ -136,8 +137,6 @@ var createDialogWindow = function (adInfo) {
   var adFeatures = dialogWindow.querySelector('.lodge__features');
   var adDescription = dialogWindow.querySelector('.lodge__description');
 
-  var adAuthorAvatar = offerDialog.querySelector('.dialog__title img');
-
   adTitle.textContent = adInfo.offer.title;
   adAddress.textContent = adInfo.offer.address;
   adPrice.textContent = adInfo.offer.price + '&#x20bd;/ночь';
@@ -150,7 +149,7 @@ var createDialogWindow = function (adInfo) {
     adFeatures.appendChild(createFeature(adInfo.offer.features[i]));
   }
 
-  adAuthorAvatar.setAttribute('src', adInfo.author.avatar);
+  adAuthorAvatar.src = adInfo.author.avatar;
 
   return dialogWindow;
 };
