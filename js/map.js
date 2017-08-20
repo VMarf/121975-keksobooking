@@ -79,7 +79,8 @@ var getAuthorAvatar = function (number) {
 var createFeature = function (featuresArrayValue) {
   var feature = document.createElement('span');
 
-  feature.classList += 'feature__image feature__image--' + featuresArrayValue;
+  feature.classList.add('feature__image');
+  feature.classList.add('feature__image--' + featuresArrayValue + '');
 
   return feature;
 };
