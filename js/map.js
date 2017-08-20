@@ -33,9 +33,18 @@ var getValueFromRange = function (minValue, maxValue) {
   return valueFromRange;
 };
 
-// Возвращает случайный элемент из переданного массива
+// Возвращает случайный индекс из массива
+var getRandomArrayIndex = function (array) {
+  var randomArrayIndex;
+
+  randomArrayIndex = Math.floor(Math.random() * (array.length));
+
+  return randomArrayIndex;
+};
+
+// Возвращает случайный элемент из массива
 var getRandomArrayValue = function (array) {
-  var randomArrayIndex = Math.floor(Math.random() * (array.length));
+  var randomArrayIndex = getRandomArrayIndex(array);
 
   return array[randomArrayIndex];
 };
@@ -45,15 +54,15 @@ var shuffleArray = function (array) {
   var newArray = array.slice();
 
   for (var i = newArray.length - 1; i > 0; i--) {
-    var randomIndex = Math.floor(Math.random() * (i + 1));
-    var randomIndexValue = newArray[randomIndex];
+    var randomArrayIndex = getRandomArrayIndex(newArray);
+    var randomArrayIndexValue = newArray[randomArrayIndex];
 
-    if (randomIndex === i) {
+    if (randomArrayIndex === i) {
       continue;
     }
 
-    newArray[randomIndex] = newArray[i];
-    newArray[i] = randomIndexValue;
+    newArray[randomArrayIndex] = newArray[i];
+    newArray[i] = randomArrayIndexValue;
   }
 
   return newArray;
