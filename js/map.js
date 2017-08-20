@@ -17,12 +17,12 @@ var AD_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'condi
 // Массив для объявлений
 var similarAds = [];
 
-var dialogWindowTemplate = document.querySelector('#lodge-template').content;
 var pinsContainer = document.querySelector('.tokyo__pin-map');
 var pinsFragment = document.createDocumentFragment();
 var offerDialog = document.querySelector('#offer-dialog');
-var offerPanel = offerDialog.querySelector('.dialog__panel');
-var adAuthorAvatar = offerDialog.querySelector('.dialog__title img');
+var dialogAvatar = offerDialog.querySelector('.dialog__title img');
+var oldDialogPanel = offerDialog.querySelector('.dialog__panel');
+var dialogPanelTemplate = document.querySelector('#lodge-template').content;
 
 // Возвращает случайное число из заданного диапазона
 var getValueFromRange = function (minValue, maxValue) {
@@ -35,11 +35,7 @@ var getValueFromRange = function (minValue, maxValue) {
 
 // Возвращает случайный индекс из массива
 var getRandomArrayIndex = function (array) {
-  var randomArrayIndex;
-
-  randomArrayIndex = Math.floor(Math.random() * (array.length));
-
-  return randomArrayIndex;
+  return Math.floor(Math.random() * array.length);
 };
 
 // Возвращает случайный элемент из массива
@@ -82,7 +78,7 @@ var createFeature = function (featuresArrayValue) {
   var feature = document.createElement('span');
 
   feature.classList.add('feature__image');
-  feature.classList.add('feature__image--' + featuresArrayValue + '');
+  feature.classList.add('feature__image--' + featuresArrayValue);
 
   return feature;
 };
@@ -135,16 +131,16 @@ var createPin = function (adInfo) {
   return newPin;
 };
 
-var createDialogWindow = function (adInfo) {
-  var dialogWindow = dialogWindowTemplate.cloneNode(true);
-  var adTitle = dialogWindow.querySelector('.lodge__title');
-  var adAddress = dialogWindow.querySelector('.lodge__address');
-  var adPrice = dialogWindow.querySelector('.lodge__price');
-  var adType = dialogWindow.querySelector('.lodge__type');
-  var adRoomsAndGuests = dialogWindow.querySelector('.lodge__rooms-and-guests');
-  var adCheckInTime = dialogWindow.querySelector('.lodge__checkin-time');
-  var adFeatures = dialogWindow.querySelector('.lodge__features');
-  var adDescription = dialogWindow.querySelector('.lodge__description');
+var createNewDialogPanel = function (adInfo) {
+  var newDialogPanel = dialogPanelTemplate.cloneNode(true);
+  var adTitle = newDialogPanel.querySelector('.lodge__title');
+  var adAddress = newDialogPanel.querySelector('.lodge__address');
+  var adPrice = newDialogPanel.querySelector('.lodge__price');
+  var adType = newDialogPanel.querySelector('.lodge__type');
+  var adRoomsAndGuests = newDialogPanel.querySelector('.lodge__rooms-and-guests');
+  var adCheckInTime = newDialogPanel.querySelector('.lodge__checkin-time');
+  var adFeatures = newDialogPanel.querySelector('.lodge__features');
+  var adDescription = newDialogPanel.querySelector('.lodge__description');
 
   adTitle.textContent = adInfo.offer.title;
   adAddress.textContent = adInfo.offer.address;
@@ -158,13 +154,13 @@ var createDialogWindow = function (adInfo) {
     adFeatures.appendChild(createFeature(adInfo.offer.features[i]));
   }
 
-  adAuthorAvatar.src = adInfo.author.avatar;
+  dialogAvatar.src = adInfo.author.avatar;
 
-  return dialogWindow;
+  return newDialogPanel;
 };
 
-var replaceDialogWindow = function (currentAd) {
-  offerDialog.replaceChild(createDialogWindow(currentAd), offerPanel);
+var replaceDialogPanel = function (currentAd) {
+  offerDialog.replaceChild(createNewDialogPanel(currentAd), oldDialogPanel);
 };
 
 var adAvatarsShuffled = shuffleArray(AD_AVATARS);
@@ -179,4 +175,4 @@ for (var i = 0; i < NUMBER_OF_ADS; i++) {
 
 pinsContainer.appendChild(pinsFragment);
 
-replaceDialogWindow(similarAds[0]);
+replaceDialogPanel(similarAds[0]);
