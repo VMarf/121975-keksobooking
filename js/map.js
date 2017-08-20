@@ -59,7 +59,7 @@ var shuffleArray = function (array) {
   return newArray;
 };
 
-// Возвращает новый массив случайной длины, созданный на основе переданного массива
+// Возвращает новый массив со случайным порядком элементов и случайной длины
 var newArrayRandomLength = function (array) {
   var shuffledArray = shuffleArray(array);
 
@@ -119,9 +119,9 @@ var createPin = function (adInfo) {
   newPin.style.left = adInfo.location.x + 'px';
 
   newPinImage.classList.add('rounded');
-  newPinImage.setAttribute('src', adInfo.author.avatar);
-  newPinImage.setAttribute('width', '40');
-  newPinImage.setAttribute('height', '40');
+  newPinImage.src = adInfo.author.avatar;
+  newPinImage.width = 40;
+  newPinImage.height = 40;
 
   return newPin;
 };
@@ -154,9 +154,7 @@ var createDialogWindow = function (adInfo) {
   return dialogWindow;
 };
 
-var replaceDialogWindow = function () {
-  var currentAd = similarAds[0];
-
+var replaceDialogWindow = function (currentAd) {
   offerDialog.replaceChild(createDialogWindow(currentAd), offerPanel);
 };
 
@@ -172,4 +170,4 @@ for (var i = 0; i < NUMBER_OF_ADS; i++) {
 
 pinsContainer.appendChild(pinsFragment);
 
-replaceDialogWindow();
+replaceDialogWindow(similarAds[0]);
