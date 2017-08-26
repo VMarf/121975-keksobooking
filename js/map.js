@@ -18,15 +18,28 @@ var AD_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'condi
 var PIN_WIDTH = 56;
 var PIN_HEIGHT = 75;
 
+// Константы для обработчиков событий
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
 // Массив для объявлений
 var similarAds = [];
 
 var pinsContainer = document.querySelector('.tokyo__pin-map');
 var pinsFragment = document.createDocumentFragment();
+var activePin;
 var offerDialog = document.querySelector('#offer-dialog');
 var dialogAvatar = offerDialog.querySelector('.dialog__title img');
-var oldDialogPanel = offerDialog.querySelector('.dialog__panel');
+var dialogClose = offerDialog.querySelector('.dialog__close');
 var dialogPanelTemplate = document.querySelector('#lodge-template').content;
+
+var showElement = function (element) {
+  element.classList.remove('hidden');
+};
+
+var hideElement = function (element) {
+  element.classList.add('hidden');
+};
 
 // Возвращает случайное число из заданного диапазона, включая минимальное и максимальное значение
 // Если убрать + 1, то возвращаемое число никогда не будет равняться максимальному значению
@@ -122,8 +135,10 @@ var createPin = function (adInfo) {
   newPin.appendChild(newPinImage);
 
   newPin.classList.add('pin');
+  newPin.id = i;
   newPin.style.left = adInfo.location.x - PIN_WIDTH / 2 + 'px';
   newPin.style.top = adInfo.location.y - PIN_HEIGHT + 'px';
+  newPin.tabIndex = 0;
 
   newPinImage.classList.add('rounded');
   newPinImage.src = adInfo.author.avatar;
@@ -162,14 +177,69 @@ var createNewDialogPanel = function (adInfo) {
 };
 
 var replaceDialogPanel = function (currentAd) {
+  var oldDialogPanel = offerDialog.querySelector('.dialog__panel');
+
   offerDialog.replaceChild(createNewDialogPanel(currentAd), oldDialogPanel);
 };
 
-// Функции для обработчиков событий
-var onPinsContainerClick = function (evt) {
-  var pin = evt.target.closest('.pin:not(.pin__main)');
+var deactivatePin = function () {
+  if (activePin) {
+    activePin.classList.remove('pin--active');
+  }
+};
 
-  pin.classList.add('pin--active');
+var showDialog = function (clickedPin) {
+  deactivatePin();
+  clickedPin.classList.add('pin--active');
+  activePin = clickedPin;
+  replaceDialogPanel(similarAds[activePin.id]);
+  showElement(offerDialog);
+};
+
+var hideDialog = function () {
+  deactivatePin();
+  hideElement(offerDialog);
+};
+
+// Функции для обработчиков событий
+var onOpenDialogClick = function (evt) {
+  var currentPin = evt.target.closest('.pin:not(.pin__main)');
+
+  if (evt.type === 'click' && currentPin) {
+    showDialog(currentPin);
+  }
+
+  document.addEventListener('keydown', onCloseDialogEscPress);
+};
+
+var onOpenDialogKeyPress = function (evt) {
+  var currentPin = evt.target.closest('.pin:not(.pin__main)');
+
+  if (evt.keyCode === ENTER_KEYCODE && currentPin) {
+    showDialog(currentPin);
+  }
+
+  document.addEventListener('keydown', onCloseDialogEscPress);
+};
+
+var onCloseDialogClick = function () {
+  hideDialog();
+
+  document.removeEventListener('keydown', onCloseDialogEscPress);
+};
+
+var onCloseDialogKeyPress = function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    hideDialog();
+  }
+
+  document.removeEventListener('keydown', onCloseDialogEscPress);
+};
+
+var onCloseDialogEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    hideDialog();
+  }
 };
 
 var adAvatarsShuffled = shuffleArray(AD_AVATARS);
@@ -184,6 +254,11 @@ for (var i = 0; i < NUMBER_OF_ADS; i++) {
 
 pinsContainer.appendChild(pinsFragment);
 
-replaceDialogPanel(similarAds[0]);
+pinsContainer.addEventListener('click', onOpenDialogClick);
 
-pinsContainer.addEventListener('click', onPinsContainerClick);
+pinsContainer.addEventListener('keydown', onOpenDialogKeyPress);
+
+dialogClose.addEventListener('click', onCloseDialogClick);
+
+dialogClose.addEventListener('keydown', onCloseDialogKeyPress);
+
