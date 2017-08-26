@@ -14,6 +14,10 @@ var AD_TYPE_MAP = {
 var TIMES = ['12:00', '13:00', '14:00'];
 var AD_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
+// Размеры пина на карте
+var PIN_WIDTH = 56;
+var PIN_HEIGHT = 75;
+
 // Массив для объявлений
 var similarAds = [];
 
@@ -24,13 +28,10 @@ var dialogAvatar = offerDialog.querySelector('.dialog__title img');
 var oldDialogPanel = offerDialog.querySelector('.dialog__panel');
 var dialogPanelTemplate = document.querySelector('#lodge-template').content;
 
-// Возвращает случайное число из заданного диапазона
+// Возвращает случайное число из заданного диапазона, включая минимальное и максимальное значение
+// Если убрать + 1, то возвращаемое число никогда не будет равняться максимальному значению
 var getValueFromRange = function (minValue, maxValue) {
-  var valueFromRange;
-
-  valueFromRange = Math.floor(Math.random() * (maxValue - minValue + 1) + minValue);
-
-  return valueFromRange;
+  return Math.floor(Math.random() * (maxValue - minValue + 1) + minValue);
 };
 
 // Возвращает случайный индекс из массива
@@ -65,7 +66,7 @@ var shuffleArray = function (array) {
 };
 
 // Возвращает новый массив со случайным порядком элементов и случайной длины
-var newArrayRandomLength = function (array) {
+var getNewArrayRandomLength = function (array) {
   var shuffledArray = shuffleArray(array);
 
   shuffledArray.length = getValueFromRange(0, shuffledArray.length);
@@ -97,7 +98,7 @@ var createSimilarAd = function (adNumber) {
       guests: getValueFromRange(1, 3),
       checkin: getRandomArrayValue(TIMES),
       checkout: getRandomArrayValue(TIMES),
-      features: newArrayRandomLength(AD_FEATURES),
+      features: getNewArrayRandomLength(AD_FEATURES),
       description: '',
       photos: []
     },
@@ -113,6 +114,7 @@ var createSimilarAd = function (adNumber) {
 };
 
 // Создание метки для карты
+// left и top задаются пину таким образом, чтобы острый конец пина указывал точно на полученные координаты
 var createPin = function (adInfo) {
   var newPin = document.createElement('div');
   var newPinImage = document.createElement('img');
@@ -120,8 +122,8 @@ var createPin = function (adInfo) {
   newPin.appendChild(newPinImage);
 
   newPin.classList.add('pin');
-  newPin.style.top = adInfo.location.y + 'px';
-  newPin.style.left = adInfo.location.x + 'px';
+  newPin.style.left = adInfo.location.x - PIN_WIDTH / 2 + 'px';
+  newPin.style.top = adInfo.location.y - PIN_HEIGHT + 'px';
 
   newPinImage.classList.add('rounded');
   newPinImage.src = adInfo.author.avatar;
