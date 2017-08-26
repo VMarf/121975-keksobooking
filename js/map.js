@@ -188,10 +188,14 @@ var deactivatePin = function () {
   }
 };
 
-var showDialog = function (clickedPin) {
+var activateCurrentPin = function (pin) {
   deactivatePin();
-  clickedPin.classList.add('pin--active');
-  activePin = clickedPin;
+  pin.classList.add('pin--active');
+  activePin = pin;
+};
+
+var showDialog = function (pin) {
+  activateCurrentPin(pin);
   replaceDialogPanel(similarAds[activePin.id]);
   showElement(offerDialog);
 };
@@ -205,10 +209,7 @@ var hideDialog = function () {
 var onOpenDialogClick = function (evt) {
   var currentPin = evt.target.closest('.pin:not(.pin__main)');
 
-  if (evt.type === 'click' && currentPin) {
-    showDialog(currentPin);
-  }
-
+  showDialog(currentPin);
   document.addEventListener('keydown', onCloseDialogEscPress);
 };
 
@@ -217,23 +218,20 @@ var onOpenDialogKeyPress = function (evt) {
 
   if (evt.keyCode === ENTER_KEYCODE && currentPin) {
     showDialog(currentPin);
+    document.addEventListener('keydown', onCloseDialogEscPress);
   }
-
-  document.addEventListener('keydown', onCloseDialogEscPress);
 };
 
 var onCloseDialogClick = function () {
   hideDialog();
-
   document.removeEventListener('keydown', onCloseDialogEscPress);
 };
 
 var onCloseDialogKeyPress = function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     hideDialog();
+    document.removeEventListener('keydown', onCloseDialogEscPress);
   }
-
-  document.removeEventListener('keydown', onCloseDialogEscPress);
 };
 
 var onCloseDialogEscPress = function (evt) {
