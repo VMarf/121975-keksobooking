@@ -33,14 +33,6 @@ var dialogAvatar = offerDialog.querySelector('.dialog__title img');
 var dialogClose = offerDialog.querySelector('.dialog__close');
 var dialogPanelTemplate = document.querySelector('#lodge-template').content;
 
-var showElement = function (element) {
-  element.classList.remove('hidden');
-};
-
-var hideElement = function (element) {
-  element.classList.add('hidden');
-};
-
 // Возвращает случайное число из заданного диапазона, включая минимальное и максимальное значение
 // Если убрать + 1, то возвращаемое число никогда не будет равняться максимальному значению
 var getValueFromRange = function (minValue, maxValue) {
@@ -197,12 +189,14 @@ var activateCurrentPin = function (pin) {
 var showDialog = function (pin) {
   activateCurrentPin(pin);
   replaceDialogPanel(similarAds[activePin.id]);
-  showElement(offerDialog);
+  offerDialog.classList.remove('hidden');
+  document.addEventListener('keydown', onCloseDialogEscPress);
 };
 
 var hideDialog = function () {
   deactivatePin();
-  hideElement(offerDialog);
+  offerDialog.classList.add('hidden');
+  document.removeEventListener('keydown', onCloseDialogEscPress);
 };
 
 // Функции для обработчиков событий
@@ -210,7 +204,6 @@ var onOpenDialogClick = function (evt) {
   var currentPin = evt.target.closest('.pin:not(.pin__main)');
 
   showDialog(currentPin);
-  document.addEventListener('keydown', onCloseDialogEscPress);
 };
 
 var onOpenDialogKeyPress = function (evt) {
@@ -218,19 +211,16 @@ var onOpenDialogKeyPress = function (evt) {
 
   if (evt.keyCode === ENTER_KEYCODE && currentPin) {
     showDialog(currentPin);
-    document.addEventListener('keydown', onCloseDialogEscPress);
   }
 };
 
 var onCloseDialogClick = function () {
   hideDialog();
-  document.removeEventListener('keydown', onCloseDialogEscPress);
 };
 
 var onCloseDialogKeyPress = function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     hideDialog();
-    document.removeEventListener('keydown', onCloseDialogEscPress);
   }
 };
 
