@@ -165,6 +165,13 @@ var replaceDialogPanel = function (currentAd) {
   offerDialog.replaceChild(createNewDialogPanel(currentAd), oldDialogPanel);
 };
 
+// Функции для обработчиков событий
+var onPinsContainerClick = function (evt) {
+  var pin = evt.target.closest('.pin:not(.pin__main)');
+
+  pin.classList.add('pin--active');
+};
+
 var adAvatarsShuffled = shuffleArray(AD_AVATARS);
 var adTitleShuffled = shuffleArray(AD_TITLE);
 
@@ -178,3 +185,5 @@ for (var i = 0; i < NUMBER_OF_ADS; i++) {
 pinsContainer.appendChild(pinsFragment);
 
 replaceDialogPanel(similarAds[0]);
+
+pinsContainer.addEventListener('click', onPinsContainerClick);
