@@ -14,23 +14,29 @@ var AD_TYPE_MAP = {
 var TIMES = ['12:00', '13:00', '14:00'];
 var AD_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
+// Размеры пина на карте
+var PIN_WIDTH = 56;
+var PIN_HEIGHT = 75;
+
+// Константы для обработчиков событий
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
 // Массив для объявлений
 var similarAds = [];
 
 var pinsContainer = document.querySelector('.tokyo__pin-map');
 var pinsFragment = document.createDocumentFragment();
+var activePin;
 var offerDialog = document.querySelector('#offer-dialog');
 var dialogAvatar = offerDialog.querySelector('.dialog__title img');
-var oldDialogPanel = offerDialog.querySelector('.dialog__panel');
+var dialogClose = offerDialog.querySelector('.dialog__close');
 var dialogPanelTemplate = document.querySelector('#lodge-template').content;
 
-// Возвращает случайное число из заданного диапазона
+// Возвращает случайное число из заданного диапазона, включая минимальное и максимальное значение
+// Если убрать + 1, то возвращаемое число никогда не будет равняться максимальному значению
 var getValueFromRange = function (minValue, maxValue) {
-  var valueFromRange;
-
-  valueFromRange = Math.floor(Math.random() * (maxValue - minValue + 1) + minValue);
-
-  return valueFromRange;
+  return Math.floor(Math.random() * (maxValue - minValue + 1) + minValue);
 };
 
 // Возвращает случайный индекс из массива
@@ -65,7 +71,7 @@ var shuffleArray = function (array) {
 };
 
 // Возвращает новый массив со случайным порядком элементов и случайной длины
-var newArrayRandomLength = function (array) {
+var getNewArrayRandomLength = function (array) {
   var shuffledArray = shuffleArray(array);
 
   shuffledArray.length = getValueFromRange(0, shuffledArray.length);
@@ -97,7 +103,7 @@ var createSimilarAd = function (adNumber) {
       guests: getValueFromRange(1, 3),
       checkin: getRandomArrayValue(TIMES),
       checkout: getRandomArrayValue(TIMES),
-      features: newArrayRandomLength(AD_FEATURES),
+      features: getNewArrayRandomLength(AD_FEATURES),
       description: '',
       photos: []
     },
@@ -113,6 +119,7 @@ var createSimilarAd = function (adNumber) {
 };
 
 // Создание метки для карты
+// left и top задаются пину таким образом, чтобы острый конец пина указывал точно на полученные координаты
 var createPin = function (adInfo) {
   var newPin = document.createElement('div');
   var newPinImage = document.createElement('img');
@@ -120,8 +127,10 @@ var createPin = function (adInfo) {
   newPin.appendChild(newPinImage);
 
   newPin.classList.add('pin');
-  newPin.style.top = adInfo.location.y + 'px';
-  newPin.style.left = adInfo.location.x + 'px';
+  newPin.id = i;
+  newPin.style.left = adInfo.location.x - PIN_WIDTH / 2 + 'px';
+  newPin.style.top = adInfo.location.y - PIN_HEIGHT + 'px';
+  newPin.tabIndex = 0;
 
   newPinImage.classList.add('rounded');
   newPinImage.src = adInfo.author.avatar;
@@ -160,7 +169,65 @@ var createNewDialogPanel = function (adInfo) {
 };
 
 var replaceDialogPanel = function (currentAd) {
+  var oldDialogPanel = offerDialog.querySelector('.dialog__panel');
+
   offerDialog.replaceChild(createNewDialogPanel(currentAd), oldDialogPanel);
+};
+
+var deactivatePin = function () {
+  if (activePin) {
+    activePin.classList.remove('pin--active');
+  }
+};
+
+var activateCurrentPin = function (pin) {
+  deactivatePin();
+  pin.classList.add('pin--active');
+  activePin = pin;
+};
+
+var showDialog = function (pin) {
+  activateCurrentPin(pin);
+  replaceDialogPanel(similarAds[activePin.id]);
+  offerDialog.classList.remove('hidden');
+  document.addEventListener('keydown', onCloseDialogEscPress);
+};
+
+var hideDialog = function () {
+  deactivatePin();
+  offerDialog.classList.add('hidden');
+  document.removeEventListener('keydown', onCloseDialogEscPress);
+};
+
+// Функции для обработчиков событий
+var onOpenDialogClick = function (evt) {
+  var currentPin = evt.target.closest('.pin:not(.pin__main)');
+
+  showDialog(currentPin);
+};
+
+var onOpenDialogKeyPress = function (evt) {
+  var currentPin = evt.target.closest('.pin:not(.pin__main)');
+
+  if (evt.keyCode === ENTER_KEYCODE && currentPin) {
+    showDialog(currentPin);
+  }
+};
+
+var onCloseDialogClick = function () {
+  hideDialog();
+};
+
+var onCloseDialogKeyPress = function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    hideDialog();
+  }
+};
+
+var onCloseDialogEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    hideDialog();
+  }
 };
 
 var adAvatarsShuffled = shuffleArray(AD_AVATARS);
@@ -175,4 +242,11 @@ for (var i = 0; i < NUMBER_OF_ADS; i++) {
 
 pinsContainer.appendChild(pinsFragment);
 
-replaceDialogPanel(similarAds[0]);
+pinsContainer.addEventListener('click', onOpenDialogClick);
+
+pinsContainer.addEventListener('keydown', onOpenDialogKeyPress);
+
+dialogClose.addEventListener('click', onCloseDialogClick);
+
+dialogClose.addEventListener('keydown', onCloseDialogKeyPress);
+
