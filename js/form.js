@@ -60,10 +60,8 @@ var onFormTypeChange = function (evt) {
   }
 };
 
-var onFormRoomNumberChange = function (evt) {
-  var target = evt.target.value;
-
-  switch (target) {
+var onFormCapacityValid = function () {
+  switch (formRoomNumber.value) {
     case ROOMS_NUMBER_1:
       formCapacity.value = GUESTS_NUMBER_1;
       formCapacity[0].disabled = true;
@@ -113,9 +111,11 @@ var onFormTimeOutChange = function (evt) {
   formTimeIn.value = evt.target.value;
 };
 
+window.addEventListener('load', onFormCapacityValid);
+
 formType.addEventListener('change', onFormTypeChange);
 
-formRoomNumber.addEventListener('change', onFormRoomNumberChange);
+formRoomNumber.addEventListener('change', onFormCapacityValid);
 
 formTimeIn.addEventListener('change', onFormTimeInChange);
 
