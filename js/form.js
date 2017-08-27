@@ -1,5 +1,18 @@
 'use strict';
 
+var FORM_TITLE_MIN_LENGTH = 30;
+var FLAT_MIN_PRICE = 1000;
+var BUNGALO_MIN_PRICE = 0;
+var HOUSE_MIN_PRICE = 5000;
+var PALACE_MIN_PRICE = 10000;
+var ROOMS_NUMBER_1 = '1';
+var ROOMS_NUMBER_2 = '2';
+var ROOMS_NUMBER_3 = '3';
+var ROOMS_NUMBER_100 = '100';
+var GUESTS_NUMBER_0 = '0';
+var GUESTS_NUMBER_1 = '1';
+var GUESTS_NUMBER_2 = '2';
+var GUESTS_NUMBER_3 = '3';
 var FIELD_BORDER = '1px solid #d9d9d3';
 var FIELD_ERROR_BORDER = '2px solid #ff0000';
 
@@ -15,9 +28,9 @@ var formTimeOut = form.querySelector('#timeout');
 var formSubmit = form.querySelector('.form__submit');
 
 var onFormTitleValid = function () {
-  if (formTitle.value.length < 30) {
+  if (formTitle.value.length < FORM_TITLE_MIN_LENGTH) {
     formTitle.style.border = FIELD_ERROR_BORDER;
-    formTitle.setCustomValidity('Минимум 30 символов');
+    formTitle.setCustomValidity('Минимум ' + FORM_TITLE_MIN_LENGTH + ' символов');
   } else {
     formTitle.style.border = FIELD_BORDER;
     formTitle.setCustomValidity('');
@@ -29,20 +42,20 @@ var onFormTypeChange = function (evt) {
 
   switch (target) {
     case 'flat':
-      formPrice.min = 1000;
-      formPrice.value = 1000;
+      formPrice.min = FLAT_MIN_PRICE;
+      formPrice.value = FLAT_MIN_PRICE;
       break;
     case 'bungalo':
-      formPrice.min = 0;
-      formPrice.value = 0;
+      formPrice.min = BUNGALO_MIN_PRICE;
+      formPrice.value = BUNGALO_MIN_PRICE;
       break;
     case 'house':
-      formPrice.min = 5000;
-      formPrice.value = 5000;
+      formPrice.min = HOUSE_MIN_PRICE;
+      formPrice.value = HOUSE_MIN_PRICE;
       break;
     case 'palace':
-      formPrice.min = 10000;
-      formPrice.value = 10000;
+      formPrice.min = PALACE_MIN_PRICE;
+      formPrice.value = PALACE_MIN_PRICE;
       break;
   }
 };
@@ -51,26 +64,34 @@ var onFormRoomNumberChange = function (evt) {
   var target = evt.target.value;
 
   switch (target) {
-    case '1':
-      formCapacity.value = '1';
+    case ROOMS_NUMBER_1:
+      formCapacity.value = GUESTS_NUMBER_1;
+      formCapacity[0].disabled = true;
+      formCapacity[1].disabled = true;
+      formCapacity[2].disabled = false;
+      formCapacity[3].disabled = true;
       break;
-    case '2':
-      formCapacity.value = '2';
+    case ROOMS_NUMBER_2:
+      formCapacity.value = GUESTS_NUMBER_2;
+      formCapacity[0].disabled = true;
+      formCapacity[1].disabled = false;
+      formCapacity[2].disabled = false;
+      formCapacity[3].disabled = true;
       break;
-    case '3':
-      formCapacity.value = '3';
+    case ROOMS_NUMBER_3:
+      formCapacity.value = GUESTS_NUMBER_3;
+      formCapacity[0].disabled = false;
+      formCapacity[1].disabled = false;
+      formCapacity[2].disabled = false;
+      formCapacity[3].disabled = true;
       break;
-    case '100':
-      formCapacity.value = '0';
+    case ROOMS_NUMBER_100:
+      formCapacity.value = GUESTS_NUMBER_0;
+      formCapacity[0].disabled = true;
+      formCapacity[1].disabled = true;
+      formCapacity[2].disabled = true;
+      formCapacity[3].disabled = false;
       break;
-  }
-};
-
-var onFormAddressInput = function () {
-  if (formAddress.value.length > 0) {
-    formAddress.setCustomValidity('');
-  } else {
-    formAddress.setCustomValidity('Обязательное поле');
   }
 };
 
@@ -95,8 +116,6 @@ var onFormTimeOutChange = function (evt) {
 formType.addEventListener('change', onFormTypeChange);
 
 formRoomNumber.addEventListener('change', onFormRoomNumberChange);
-
-formAddress.addEventListener('input', onFormAddressInput);
 
 formTimeIn.addEventListener('change', onFormTimeInChange);
 
