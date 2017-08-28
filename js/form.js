@@ -111,7 +111,7 @@ var onFormTitleValid = function () {
 };
 
 var onFormPriceValid = function () {
-  if (!formPrice.validity.valid) {
+  if (formPrice.validity.rangeUnderflow) {
     formPrice.style.border = FIELD_ERROR_BORDER;
     formPrice.setCustomValidity('Минимальная цена ' + formPrice.min);
   } else {
