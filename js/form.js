@@ -1,18 +1,21 @@
 'use strict';
 
 var FORM_TITLE_MIN_LENGTH = 30;
+var FORM_TITLE_MAX_LENGTH = 100;
 var FLAT_MIN_PRICE = 1000;
 var BUNGALO_MIN_PRICE = 0;
 var HOUSE_MIN_PRICE = 5000;
 var PALACE_MIN_PRICE = 10000;
-var ROOMS_NUMBER_1 = '1';
-var ROOMS_NUMBER_2 = '2';
-var ROOMS_NUMBER_3 = '3';
-var ROOMS_NUMBER_100 = '100';
-var GUESTS_NUMBER_0 = '0';
-var GUESTS_NUMBER_1 = '1';
-var GUESTS_NUMBER_2 = '2';
-var GUESTS_NUMBER_3 = '3';
+
+// var ROOMS_NUMBER_1 = '1';
+// var ROOMS_NUMBER_2 = '2';
+// var ROOMS_NUMBER_3 = '3';
+// var ROOMS_NUMBER_100 = '100';
+// var GUESTS_NUMBER_0 = '0';
+// var GUESTS_NUMBER_1 = '1';
+// var GUESTS_NUMBER_2 = '2';
+// var GUESTS_NUMBER_3 = '3';
+
 var FIELD_BORDER = '1px solid #d9d9d3';
 var FIELD_ERROR_BORDER = '2px solid #ff0000';
 
@@ -27,10 +30,32 @@ var formTimeIn = form.querySelector('#timein');
 var formTimeOut = form.querySelector('#timeout');
 var formSubmit = form.querySelector('.form__submit');
 
+var AVAILABLE_GUESTS_NUMBER = {
+  ROOMS_NUMBER_1: ['1'],
+  ROOMS_NUMBER_2: ['1', '2'],
+  ROOMS_NUMBER_3: ['1', '2', '3'],
+  ROOMS_NUMBER_100: ['0']
+};
+
+var setAvailableValues = function (roomsNumber) {
+  var availableValues = AVAILABLE_GUESTS_NUMBER[roomsNumber];
+
+  // for (var i = 0; i < formCapacity.length; i++) {
+  //   if (formCapacity[i].value === /* сравниваем с элементами в массиве availableValues */) {
+  //     formCapacity[i].disabled = true;
+  //   }
+  // }
+};
+
+setAvailableValues(ROOMS_NUMBER_1);
+
 var onFormTitleValid = function () {
   if (formTitle.value.length < FORM_TITLE_MIN_LENGTH) {
     formTitle.style.border = FIELD_ERROR_BORDER;
     formTitle.setCustomValidity('Минимум ' + FORM_TITLE_MIN_LENGTH + ' символов');
+  } else if (formTitle.value.length > FORM_TITLE_MAX_LENGTH) {
+    formTitle.style.border = FIELD_ERROR_BORDER;
+    formTitle.setCustomValidity('Максимум ' + FORM_TITLE_MAX_LENGTH + ' символов');
   } else {
     formTitle.style.border = FIELD_BORDER;
     formTitle.setCustomValidity('');
@@ -60,38 +85,38 @@ var onFormTypeChange = function (evt) {
   }
 };
 
-var onFormCapacityValid = function () {
-  switch (formRoomNumber.value) {
-    case ROOMS_NUMBER_1:
-      formCapacity.value = GUESTS_NUMBER_1;
-      formCapacity[0].disabled = true;
-      formCapacity[1].disabled = true;
-      formCapacity[2].disabled = false;
-      formCapacity[3].disabled = true;
-      break;
-    case ROOMS_NUMBER_2:
-      formCapacity.value = GUESTS_NUMBER_2;
-      formCapacity[0].disabled = true;
-      formCapacity[1].disabled = false;
-      formCapacity[2].disabled = false;
-      formCapacity[3].disabled = true;
-      break;
-    case ROOMS_NUMBER_3:
-      formCapacity.value = GUESTS_NUMBER_3;
-      formCapacity[0].disabled = false;
-      formCapacity[1].disabled = false;
-      formCapacity[2].disabled = false;
-      formCapacity[3].disabled = true;
-      break;
-    case ROOMS_NUMBER_100:
-      formCapacity.value = GUESTS_NUMBER_0;
-      formCapacity[0].disabled = true;
-      formCapacity[1].disabled = true;
-      formCapacity[2].disabled = true;
-      formCapacity[3].disabled = false;
-      break;
-  }
-};
+// var onFormCapacityValid = function () {
+//   switch (formRoomNumber.value) {
+//     case ROOMS_NUMBER_1:
+//       formCapacity.value = GUESTS_NUMBER_1;
+//       formCapacity[0].disabled = true;
+//       formCapacity[1].disabled = true;
+//       formCapacity[2].disabled = false;
+//       formCapacity[3].disabled = true;
+//       break;
+//     case ROOMS_NUMBER_2:
+//       formCapacity.value = GUESTS_NUMBER_2;
+//       formCapacity[0].disabled = true;
+//       formCapacity[1].disabled = false;
+//       formCapacity[2].disabled = false;
+//       formCapacity[3].disabled = true;
+//       break;
+//     case ROOMS_NUMBER_3:
+//       formCapacity.value = GUESTS_NUMBER_3;
+//       formCapacity[0].disabled = false;
+//       formCapacity[1].disabled = false;
+//       formCapacity[2].disabled = false;
+//       formCapacity[3].disabled = true;
+//       break;
+//     case ROOMS_NUMBER_100:
+//       formCapacity.value = GUESTS_NUMBER_0;
+//       formCapacity[0].disabled = true;
+//       formCapacity[1].disabled = true;
+//       formCapacity[2].disabled = true;
+//       formCapacity[3].disabled = false;
+//       break;
+//   }
+// };
 
 var onFormAddressValid = function () {
   if (formAddress.value === '') {
@@ -111,11 +136,11 @@ var onFormTimeOutChange = function (evt) {
   formTimeIn.value = evt.target.value;
 };
 
-window.addEventListener('load', onFormCapacityValid);
+// window.addEventListener('load', onFormCapacityValid);
 
 formType.addEventListener('change', onFormTypeChange);
 
-formRoomNumber.addEventListener('change', onFormCapacityValid);
+// formRoomNumber.addEventListener('change', onFormCapacityValid);
 
 formTimeIn.addEventListener('change', onFormTimeInChange);
 
