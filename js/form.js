@@ -11,10 +11,10 @@ var ROOMS_NUMBER_2 = '2';
 var ROOMS_NUMBER_3 = '3';
 var ROOMS_NUMBER_100 = '100';
 var AVAILABLE_GUESTS_NUMBER = {
-  [ROOMS_NUMBER_1]: ['1'],
-  [ROOMS_NUMBER_2]: ['1', '2'],
-  [ROOMS_NUMBER_3]: ['1', '2', '3'],
-  [ROOMS_NUMBER_100]: ['0']
+  '1': ['1'],
+  '2': ['1', '2'],
+  '3': ['1', '2', '3'],
+  '100': ['0']
 };
 var FIELD_BORDER = '1px solid #d9d9d3';
 var FIELD_ERROR_BORDER = '2px solid #ff0000';
@@ -111,7 +111,7 @@ var onFormTitleValid = function () {
 };
 
 var onFormPriceValid = function () {
-  if (formPrice.value < formPrice.min) {
+  if (!formPrice.validity.valid) {
     formPrice.style.border = FIELD_ERROR_BORDER;
     formPrice.setCustomValidity('Минимальная цена ' + formPrice.min);
   } else {
