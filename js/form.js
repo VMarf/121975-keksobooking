@@ -6,16 +6,16 @@ var FLAT_MIN_PRICE = 1000;
 var BUNGALO_MIN_PRICE = 0;
 var HOUSE_MIN_PRICE = 5000;
 var PALACE_MIN_PRICE = 10000;
-
-// var ROOMS_NUMBER_1 = '1';
-// var ROOMS_NUMBER_2 = '2';
-// var ROOMS_NUMBER_3 = '3';
-// var ROOMS_NUMBER_100 = '100';
-// var GUESTS_NUMBER_0 = '0';
-// var GUESTS_NUMBER_1 = '1';
-// var GUESTS_NUMBER_2 = '2';
-// var GUESTS_NUMBER_3 = '3';
-
+var ROOMS_NUMBER_1 = '1';
+var ROOMS_NUMBER_2 = '2';
+var ROOMS_NUMBER_3 = '3';
+var ROOMS_NUMBER_100 = '100';
+var AVAILABLE_GUESTS_NUMBER = {
+  [ROOMS_NUMBER_1]: ['1'],
+  [ROOMS_NUMBER_2]: ['1', '2'],
+  [ROOMS_NUMBER_3]: ['1', '2', '3'],
+  [ROOMS_NUMBER_100]: ['0']
+};
 var FIELD_BORDER = '1px solid #d9d9d3';
 var FIELD_ERROR_BORDER = '2px solid #ff0000';
 
@@ -30,24 +30,72 @@ var formTimeIn = form.querySelector('#timein');
 var formTimeOut = form.querySelector('#timeout');
 var formSubmit = form.querySelector('.form__submit');
 
-var AVAILABLE_GUESTS_NUMBER = {
-  ROOMS_NUMBER_1: ['1'],
-  ROOMS_NUMBER_2: ['1', '2'],
-  ROOMS_NUMBER_3: ['1', '2', '3'],
-  ROOMS_NUMBER_100: ['0']
+var setMinPrice = function (value) {
+  formPrice.min = value;
+  formPrice.value = value;
 };
 
 var setAvailableValues = function (roomsNumber) {
   var availableValues = AVAILABLE_GUESTS_NUMBER[roomsNumber];
+  var maxGuest = 0;
 
-  // for (var i = 0; i < formCapacity.length; i++) {
-  //   if (formCapacity[i].value === /* сравниваем с элементами в массиве availableValues */) {
-  //     formCapacity[i].disabled = true;
-  //   }
-  // }
+  for (var i = 0; i < formCapacity.length; i++) {
+    var option = formCapacity[i];
+
+    if (availableValues.indexOf(option.value) === -1) {
+      option.disabled = true;
+    } else {
+      option.disabled = false;
+      maxGuest = option.value > maxGuest ? option.value : maxGuest;
+    }
+  }
+
+  formCapacity.value = maxGuest;
 };
 
-setAvailableValues(ROOMS_NUMBER_1);
+var onFormTypeChange = function (evt) {
+  var target = evt.target.value;
+
+  switch (target) {
+    case 'flat':
+      setMinPrice(FLAT_MIN_PRICE);
+      break;
+    case 'bungalo':
+      setMinPrice(BUNGALO_MIN_PRICE);
+      break;
+    case 'house':
+      setMinPrice(HOUSE_MIN_PRICE);
+      break;
+    case 'palace':
+      setMinPrice(PALACE_MIN_PRICE);
+      break;
+  }
+};
+
+var onSetAvailableValues = function () {
+  switch (formRoomNumber.value) {
+    case ROOMS_NUMBER_1:
+      setAvailableValues(ROOMS_NUMBER_1);
+      break;
+    case ROOMS_NUMBER_2:
+      setAvailableValues(ROOMS_NUMBER_2);
+      break;
+    case ROOMS_NUMBER_3:
+      setAvailableValues(ROOMS_NUMBER_3);
+      break;
+    case ROOMS_NUMBER_100:
+      setAvailableValues(ROOMS_NUMBER_100);
+      break;
+  }
+};
+
+var onFormTimeInChange = function (evt) {
+  formTimeOut.value = evt.target.value;
+};
+
+var onFormTimeOutChange = function (evt) {
+  formTimeIn.value = evt.target.value;
+};
 
 var onFormTitleValid = function () {
   if (formTitle.value.length < FORM_TITLE_MIN_LENGTH) {
@@ -62,61 +110,15 @@ var onFormTitleValid = function () {
   }
 };
 
-var onFormTypeChange = function (evt) {
-  var target = evt.target.value;
-
-  switch (target) {
-    case 'flat':
-      formPrice.min = FLAT_MIN_PRICE;
-      formPrice.value = FLAT_MIN_PRICE;
-      break;
-    case 'bungalo':
-      formPrice.min = BUNGALO_MIN_PRICE;
-      formPrice.value = BUNGALO_MIN_PRICE;
-      break;
-    case 'house':
-      formPrice.min = HOUSE_MIN_PRICE;
-      formPrice.value = HOUSE_MIN_PRICE;
-      break;
-    case 'palace':
-      formPrice.min = PALACE_MIN_PRICE;
-      formPrice.value = PALACE_MIN_PRICE;
-      break;
+var onFormPriceValid = function () {
+  if (formPrice.value < formPrice.min) {
+    formPrice.style.border = FIELD_ERROR_BORDER;
+    formPrice.setCustomValidity('Минимальная цена ' + formPrice.min);
+  } else {
+    formPrice.style.border = FIELD_BORDER;
+    formPrice.setCustomValidity('');
   }
 };
-
-// var onFormCapacityValid = function () {
-//   switch (formRoomNumber.value) {
-//     case ROOMS_NUMBER_1:
-//       formCapacity.value = GUESTS_NUMBER_1;
-//       formCapacity[0].disabled = true;
-//       formCapacity[1].disabled = true;
-//       formCapacity[2].disabled = false;
-//       formCapacity[3].disabled = true;
-//       break;
-//     case ROOMS_NUMBER_2:
-//       formCapacity.value = GUESTS_NUMBER_2;
-//       formCapacity[0].disabled = true;
-//       formCapacity[1].disabled = false;
-//       formCapacity[2].disabled = false;
-//       formCapacity[3].disabled = true;
-//       break;
-//     case ROOMS_NUMBER_3:
-//       formCapacity.value = GUESTS_NUMBER_3;
-//       formCapacity[0].disabled = false;
-//       formCapacity[1].disabled = false;
-//       formCapacity[2].disabled = false;
-//       formCapacity[3].disabled = true;
-//       break;
-//     case ROOMS_NUMBER_100:
-//       formCapacity.value = GUESTS_NUMBER_0;
-//       formCapacity[0].disabled = true;
-//       formCapacity[1].disabled = true;
-//       formCapacity[2].disabled = true;
-//       formCapacity[3].disabled = false;
-//       break;
-//   }
-// };
 
 var onFormAddressValid = function () {
   if (formAddress.value === '') {
@@ -128,24 +130,18 @@ var onFormAddressValid = function () {
   }
 };
 
-var onFormTimeInChange = function (evt) {
-  formTimeOut.value = evt.target.value;
-};
-
-var onFormTimeOutChange = function (evt) {
-  formTimeIn.value = evt.target.value;
-};
-
-// window.addEventListener('load', onFormCapacityValid);
+window.addEventListener('load', onSetAvailableValues);
 
 formType.addEventListener('change', onFormTypeChange);
 
-// formRoomNumber.addEventListener('change', onFormCapacityValid);
+formRoomNumber.addEventListener('change', onSetAvailableValues);
 
 formTimeIn.addEventListener('change', onFormTimeInChange);
 
 formTimeOut.addEventListener('change', onFormTimeOutChange);
 
 formSubmit.addEventListener('click', onFormTitleValid);
+
+formSubmit.addEventListener('click', onFormPriceValid);
 
 formSubmit.addEventListener('click', onFormAddressValid);
