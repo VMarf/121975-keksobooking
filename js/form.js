@@ -1,6 +1,6 @@
 'use strict';
 
-// модуль, который работает с формой объявления
+// Модуль, который работает с формой объявления
 (function () {
   var FORM_TITLE_MIN_LENGTH = 30;
   var FORM_TITLE_MAX_LENGTH = 100;
@@ -28,11 +28,13 @@
   var formTimeOut = form.querySelector('#timeout');
   var formSubmit = form.querySelector('.form__submit');
 
+  // Для установки минимальной цены
   var setMinPrice = function (value) {
     formPrice.min = value;
     formPrice.value = value;
   };
 
+  // Для отключения недопустимых значений из выпадающего списка с количеством мест
   var setAvailableValues = function (roomsNumber) {
     var availableValues = AVAILABLE_GUESTS_NUMBER[roomsNumber];
     var maxGuest = 0;
@@ -51,6 +53,7 @@
     formCapacity.value = maxGuest;
   };
 
+  // Устанавливаем минимальную цену в зависимости от типа жилья
   var onFormTypeChange = function (evt) {
     var target = evt.target.value;
 
@@ -70,18 +73,22 @@
     }
   };
 
+  // Отключаем элементы из выпадающего списка с количеством мест, в зависимости от количества комнат
   var onSetAvailableValues = function () {
     setAvailableValues(formRoomNumber.value);
   };
 
+  // Синхронизируем время выезда с временем заезда
   var onFormTimeInChange = function (evt) {
     formTimeOut.value = evt.target.value;
   };
 
+  // Синхронизируем время заезда с временем выезда
   var onFormTimeOutChange = function (evt) {
     formTimeIn.value = evt.target.value;
   };
 
+  // Валидация заголовка объявления
   var onFormTitleValid = function () {
     if (formTitle.value.length < FORM_TITLE_MIN_LENGTH) {
       formTitle.style.border = FIELD_ERROR_BORDER;
@@ -95,6 +102,7 @@
     }
   };
 
+  // Валидация цены
   var onFormPriceValid = function () {
     if (formPrice.validity.rangeUnderflow) {
       formPrice.style.border = FIELD_ERROR_BORDER;
@@ -105,6 +113,7 @@
     }
   };
 
+  // Валидация адреса
   var onFormAddressValid = function () {
     if (formAddress.value === '') {
       formAddress.style.border = FIELD_ERROR_BORDER;

@@ -1,17 +1,17 @@
 'use strict';
 
-// модуль для отрисовки пина и взаимодействия с ним
+// Модуль для отрисовки пина
 (function () {
 
-  // Размеры пина на карте
+  // Размеры пина
   var PIN_WIDTH = 56;
   var PIN_HEIGHT = 75;
 
   var pinsContainer = document.querySelector('.tokyo__pin-map');
   var pinsFragment = document.createDocumentFragment();
+  var activePin = null;
 
-  // Создание метки для карты
-  // left и top задаются пину таким образом, чтобы острый конец пина указывал точно на полученные координаты
+  // Создание метки для карты, left и top задаются пину таким образом, чтобы острый конец указывал точно на полученные координаты
   var createPin = function (adInfo) {
     var newPin = document.createElement('div');
     var newPinImage = document.createElement('img');
@@ -38,4 +38,9 @@
   }
 
   pinsContainer.appendChild(pinsFragment);
+
+  window.pin = {
+    pinsContainer: pinsContainer,
+    activePin: activePin
+  };
 })();

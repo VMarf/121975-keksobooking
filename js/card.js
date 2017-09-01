@@ -1,12 +1,17 @@
 'use strict';
 
-// модуль для отрисовки элемента на карточке
+// Модуль для отрисовки элемента на карточке
 (function () {
   var AD_TYPE_MAP = {
     'flat': 'Квартира',
     'bungalo': 'Бунгало',
     'house': 'Дом'
   };
+
+  var offerDialog = document.querySelector('#offer-dialog');
+  var dialogAvatar = offerDialog.querySelector('.dialog__title img');
+  var dialogClose = offerDialog.querySelector('.dialog__close');
+  var dialogPanelTemplate = document.querySelector('#lodge-template').content;
 
   // Создание элемента списка достоинств в объявлении
   var createFeature = function (featuresArrayValue) {
@@ -18,8 +23,9 @@
     return feature;
   };
 
+  // Создание и заполнение новой карточки объявления
   var createNewDialogPanel = function (adInfo) {
-    var newDialogPanel = window.util.dialogPanelTemplate.cloneNode(true);
+    var newDialogPanel = dialogPanelTemplate.cloneNode(true);
     var adTitle = newDialogPanel.querySelector('.lodge__title');
     var adAddress = newDialogPanel.querySelector('.lodge__address');
     var adPrice = newDialogPanel.querySelector('.lodge__price');
@@ -41,16 +47,19 @@
       adFeatures.appendChild(createFeature(adInfo.offer.features[i]));
     }
 
-    window.util.dialogAvatar.src = adInfo.author.avatar;
+    dialogAvatar.src = adInfo.author.avatar;
 
     return newDialogPanel;
   };
 
   window.card = {
+    offerDialog: offerDialog,
+    dialogClose: dialogClose,
+
     replaceDialogPanel: function (currentAd) {
       var oldDialogPanel = document.querySelector('.dialog__panel');
 
-      window.util.offerDialog.replaceChild(createNewDialogPanel(currentAd), oldDialogPanel);
+      offerDialog.replaceChild(createNewDialogPanel(currentAd), oldDialogPanel);
     }
   };
 })();
