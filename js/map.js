@@ -1,68 +1,41 @@
 'use strict';
 
-// Модуль, который работает с картой, использует модули pin и card
+// Модуль, который работает с картой
 (function () {
-  var deactivatePin = function () {
-    if (window.pin.activePin) {
-      window.pin.activePin.classList.remove('pin--active');
+  var pinsContainer = document.querySelector('.tokyo__pin-map');
+  var pinsFragment = document.createDocumentFragment();
+
+  // Создание пина для каждого объявления
+  var fillPinsContainer = function () {
+    for (var i = 0; i < window.data.length; i++) {
+      var element = window.pin.createPin(window.data[i]);
+
+      pinsFragment.appendChild(element);
     }
+
+    pinsContainer.appendChild(pinsFragment);
   };
 
-  var activateCurrentPin = function (pin) {
-    deactivatePin();
-    pin.classList.add('pin--active');
-    window.pin.activePin = pin;
-  };
-
-  var showDialog = function (pin) {
-    activateCurrentPin(pin);
-    window.card.replaceDialogPanel(window.data[window.pin.activePin.id]);
-    window.card.offerDialog.classList.remove('hidden');
-    document.addEventListener('keydown', onCloseDialogEscPress);
-  };
-
-  var hideDialog = function () {
-    deactivatePin();
-    window.card.offerDialog.classList.add('hidden');
-    document.removeEventListener('keydown', onCloseDialogEscPress);
-  };
-
-  // Функции для обработчиков событий
   var onOpenDialogClick = function (evt) {
     var currentPin = evt.target.closest('.pin:not(.pin__main)');
 
-    showDialog(currentPin);
+    if (currentPin) {
+      window.card.showDialog(currentPin);
+    }
   };
 
   var onOpenDialogKeyPress = function (evt) {
     var currentPin = evt.target.closest('.pin:not(.pin__main)');
 
-    if (evt.keyCode === window.util.ENTER_KEYCODE && currentPin) {
-      showDialog(currentPin);
+    if (window.util.isKeyEnter(evt)) {
+      window.card.showDialog(currentPin);
     }
   };
 
-  var onCloseDialogClick = function () {
-    hideDialog();
-  };
+  // Заполняем карту пинами
+  fillPinsContainer();
 
-  var onCloseDialogKeyPress = function (evt) {
-    if (evt.keyCode === window.util.ENTER_KEYCODE) {
-      hideDialog();
-    }
-  };
+  pinsContainer.addEventListener('click', onOpenDialogClick);
 
-  var onCloseDialogEscPress = function (evt) {
-    if (evt.keyCode === window.util.ESC_KEYCODE) {
-      hideDialog();
-    }
-  };
-
-  window.pin.pinsContainer.addEventListener('click', onOpenDialogClick);
-
-  window.pin.pinsContainer.addEventListener('keydown', onOpenDialogKeyPress);
-
-  window.card.dialogClose.addEventListener('click', onCloseDialogClick);
-
-  window.card.dialogClose.addEventListener('keydown', onCloseDialogKeyPress);
+  pinsContainer.addEventListener('keydown', onOpenDialogKeyPress);
 })();

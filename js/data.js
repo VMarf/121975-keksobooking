@@ -1,7 +1,7 @@
 'use strict';
 
 // Модуль, который создает данные
-(function () {
+window.data = (function () {
 
   // Сколько объявлений необходимо создать
   var NUMBER_OF_ADS = 8;
@@ -15,6 +15,9 @@
 
   // Массив для объявлений
   var similarAds = [];
+
+  var adAvatarsShuffled = window.util.shuffleArray(AD_AVATARS);
+  var adTitleShuffled = window.util.shuffleArray(AD_TITLE);
 
   // Создание объявления
   var createSimilarAd = function (adNumber) {
@@ -45,14 +48,10 @@
     return similarAd;
   };
 
-  var adAvatarsShuffled = window.util.shuffleArray(AD_AVATARS);
-  var adTitleShuffled = window.util.shuffleArray(AD_TITLE);
-
   // Заполняем массив объявлений
   for (var i = 0; i < NUMBER_OF_ADS; i++) {
     similarAds[i] = createSimilarAd(i);
   }
 
-  // Отправляем готовые объявления в глобальную область видимости
-  window.data = similarAds;
+  return similarAds;
 })();

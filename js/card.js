@@ -1,17 +1,18 @@
 'use strict';
 
 // Модуль для отрисовки элемента на карточке
-(function () {
+window.card = (function () {
+  var offerDialog = document.querySelector('#offer-dialog');
+  var dialogAvatar = offerDialog.querySelector('.dialog__title img');
+  var dialogCloseBtn = offerDialog.querySelector('.dialog__close');
+  var oldDialogPanel = offerDialog.querySelector('.dialog__panel');
+  var dialogPanelTemplate = document.querySelector('#lodge-template').content;
+
   var AD_TYPE_MAP = {
     'flat': 'Квартира',
     'bungalo': 'Бунгало',
     'house': 'Дом'
   };
-
-  var offerDialog = document.querySelector('#offer-dialog');
-  var dialogAvatar = offerDialog.querySelector('.dialog__title img');
-  var dialogClose = offerDialog.querySelector('.dialog__close');
-  var dialogPanelTemplate = document.querySelector('#lodge-template').content;
 
   // Создание элемента списка достоинств в объявлении
   var createFeature = function (featuresArrayValue) {
@@ -52,14 +53,51 @@
     return newDialogPanel;
   };
 
-  window.card = {
-    offerDialog: offerDialog,
-    dialogClose: dialogClose,
+  var replaceDialogPanel = function (adInfo) {
+    var newDialogPanel = createNewDialogPanel(adInfo).querySelector('.dialog__panel');
 
-    replaceDialogPanel: function (currentAd) {
-      var oldDialogPanel = document.querySelector('.dialog__panel');
+    offerDialog.replaceChild(newDialogPanel, oldDialogPanel);
+    oldDialogPanel = newDialogPanel;
+  };
 
-      offerDialog.replaceChild(createNewDialogPanel(currentAd), oldDialogPanel);
+  var showDialog = function (pin) {
+    var currentAd = window.data[pin.id];
+
+    window.pin.activateCurrentPin(pin);
+    replaceDialogPanel(currentAd);
+    offerDialog.classList.remove('hidden');
+
+    document.addEventListener('keydown', onCloseDialogEscPress);
+  };
+
+  var hideDialog = function () {
+    window.pin.deactivatePin();
+    offerDialog.classList.add('hidden');
+
+    document.removeEventListener('keydown', onCloseDialogEscPress);
+  };
+
+  var onDialogCloseBtnClick = function () {
+    hideDialog();
+  };
+
+  var onDialogCloseBtnKeyPress = function (evt) {
+    if (window.util.isKeyEnter(evt)) {
+      hideDialog();
     }
+  };
+
+  var onCloseDialogEscPress = function (evt) {
+    if (window.util.isKeyEsc(evt)) {
+      hideDialog();
+    }
+  };
+
+  dialogCloseBtn.addEventListener('click', onDialogCloseBtnClick);
+
+  dialogCloseBtn.addEventListener('keydown', onDialogCloseBtnKeyPress);
+
+  return {
+    showDialog: showDialog
   };
 })();

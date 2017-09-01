@@ -1,15 +1,13 @@
 'use strict';
 
 // Модуль для отрисовки пина
-(function () {
+window.pin = (function () {
 
   // Размеры пина
   var PIN_WIDTH = 56;
   var PIN_HEIGHT = 75;
 
-  var pinsContainer = document.querySelector('.tokyo__pin-map');
-  var pinsFragment = document.createDocumentFragment();
-  var activePin = null;
+  var activePin;
 
   // Создание метки для карты, left и top задаются пину таким образом, чтобы острый конец указывал точно на полученные координаты
   var createPin = function (adInfo) {
@@ -19,7 +17,7 @@
     newPin.appendChild(newPinImage);
 
     newPin.classList.add('pin');
-    newPin.id = i;
+    newPin.id = window.data.indexOf(adInfo);
     newPin.style.left = adInfo.location.x - PIN_WIDTH / 2 + 'px';
     newPin.style.top = adInfo.location.y - PIN_HEIGHT + 'px';
     newPin.tabIndex = 0;
@@ -32,15 +30,21 @@
     return newPin;
   };
 
-  // Заполняем карту пинами
-  for (var i = 0; i < window.data.length; i++) {
-    pinsFragment.appendChild(createPin(window.data[i]));
-  }
+  var deactivatePin = function () {
+    if (activePin) {
+      activePin.classList.remove('pin--active');
+    }
+  };
 
-  pinsContainer.appendChild(pinsFragment);
+  var activateCurrentPin = function (pin) {
+    deactivatePin();
+    pin.classList.add('pin--active');
+    activePin = pin;
+  };
 
-  window.pin = {
-    pinsContainer: pinsContainer,
-    activePin: activePin
+  return {
+    createPin: createPin,
+    deactivatePin: deactivatePin,
+    activateCurrentPin: activateCurrentPin
   };
 })();

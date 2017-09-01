@@ -4,53 +4,62 @@
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
 
-  window.util = {
-    ESC_KEYCODE: ESC_KEYCODE,
-    ENTER_KEYCODE: ENTER_KEYCODE,
+  // Возвращает случайное число из заданного диапазона, включая минимальное и максимальное значение, если убрать + 1, то возвращаемое число никогда не будет равняться максимальному значению
+  var getValueFromRange = function (minValue, maxValue) {
+    return Math.floor(Math.random() * (maxValue - minValue + 1) + minValue);
+  };
 
-    // Возвращает случайное число из заданного диапазона, включая минимальное и максимальное значение, если убрать + 1, то возвращаемое число никогда не будет равняться максимальному значению
-    getValueFromRange: function (minValue, maxValue) {
-      return Math.floor(Math.random() * (maxValue - minValue + 1) + minValue);
-    },
+  // Возвращает случайный индекс из массива
+  var getRandomArrayIndex = function (array) {
+    return Math.floor(Math.random() * array.length);
+  };
 
-    // Возвращает случайный индекс из массива
-    getRandomArrayIndex: function (array) {
-      return Math.floor(Math.random() * array.length);
-    },
+  // Возвращает случайный элемент из массива
+  var getRandomArrayValue = function (array) {
+    var randomArrayIndex = getRandomArrayIndex(array);
 
-    // Возвращает случайный элемент из массива
-    getRandomArrayValue: function (array) {
-      var randomArrayIndex = window.util.getRandomArrayIndex(array);
+    return array[randomArrayIndex];
+  };
 
-      return array[randomArrayIndex];
-    },
+  // Возвращает новый массив со случайным порядком элементов
+  var shuffleArray = function (array) {
+    var newArray = array.slice();
 
-    // Возвращает новый массив со случайным порядком элементов
-    shuffleArray: function (array) {
-      var newArray = array.slice();
+    for (var i = newArray.length - 1; i > 0; i--) {
+      var randomArrayIndex = getRandomArrayIndex(newArray);
+      var randomArrayIndexValue = newArray[randomArrayIndex];
 
-      for (var i = newArray.length - 1; i > 0; i--) {
-        var randomArrayIndex = window.util.getRandomArrayIndex(newArray);
-        var randomArrayIndexValue = newArray[randomArrayIndex];
-
-        if (randomArrayIndex === i) {
-          continue;
-        }
-
-        newArray[randomArrayIndex] = newArray[i];
-        newArray[i] = randomArrayIndexValue;
+      if (randomArrayIndex === i) {
+        continue;
       }
 
-      return newArray;
-    },
-
-    // Возвращает новый массив со случайным порядком элементов и случайной длины
-    getNewArrayRandomLength: function (array) {
-      var shuffledArray = window.util.shuffleArray(array);
-
-      shuffledArray.length = window.util.getValueFromRange(0, shuffledArray.length);
-
-      return shuffledArray;
+      newArray[randomArrayIndex] = newArray[i];
+      newArray[i] = randomArrayIndexValue;
     }
+
+    return newArray;
+  };
+
+  // Возвращает новый массив со случайным порядком элементов и случайной длины
+  var getNewArrayRandomLength = function (array) {
+    var shuffledArray = shuffleArray(array);
+
+    shuffledArray.length = getValueFromRange(0, shuffledArray.length);
+
+    return shuffledArray;
+  };
+
+  window.util = {
+    isKeyEsc: function (evt) {
+      return evt.keyCode === ESC_KEYCODE;
+    },
+    isKeyEnter: function (evt) {
+      return evt.keyCode === ENTER_KEYCODE;
+    },
+    getValueFromRange: getValueFromRange,
+    getRandomArrayIndex: getRandomArrayIndex,
+    getRandomArrayValue: getRandomArrayValue,
+    shuffleArray: shuffleArray,
+    getNewArrayRandomLength: getNewArrayRandomLength
   };
 })();
