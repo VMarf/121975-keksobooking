@@ -18,6 +18,9 @@
   var pinMain = pinsContainer.querySelector('.pin__main');
   var formAddress = document.querySelector('#address');
 
+  var pinMainTop;
+  var pinMainLeft;
+
   // Создание пина для каждого объявления
   var fillPinsContainer = function () {
     for (var i = 0; i < window.data.length; i++) {
@@ -64,12 +67,15 @@
         y: moveEvt.clientY
       };
 
-      if (pinMain.offsetLeft - shift.x >= PIN_MAIN_MIN_X && pinMain.offsetLeft - shift.x <= PIN_MAIN_MAX_X && pinMain.offsetTop - shift.y >= PIN_MAIN_MIN_Y && pinMain.offsetTop - shift.y <= PIN_MAIN_MAX_Y) {
-        pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
-        pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      pinMainTop = pinMain.offsetTop - shift.y;
+      pinMainLeft = pinMain.offsetLeft - shift.x;
+
+      if (pinMainLeft >= PIN_MAIN_MIN_X && pinMainLeft <= PIN_MAIN_MAX_X && pinMainTop >= PIN_MAIN_MIN_Y && pinMainTop <= PIN_MAIN_MAX_Y) {
+        pinMain.style.top = pinMainTop + 'px';
+        pinMain.style.left = pinMainLeft + 'px';
 
         // Записываем в поле адреса координаты, на которые пин указывает острым концом
-        formAddress.value = 'x: ' + (pinMain.offsetLeft - shift.x - PIN_WIDTH / 2) + ', y: ' + (pinMain.offsetTop - shift.y - PIN_HEIGHT);
+        formAddress.value = 'x: ' + (pinMainLeft - PIN_WIDTH / 2) + ', y: ' + (pinMainTop - PIN_HEIGHT);
       }
     };
 
