@@ -2,8 +2,24 @@
 
 // Модуль, который работает с картой
 (function () {
+
+  // Размеры пина
+  var PIN_WIDTH = 56;
+  var PIN_HEIGHT = 75;
+
+  // Минимальные и максимальные координаты главного пина
+  var PIN_MAIN_MIN_X = 0;
+  var PIN_MAIN_MAX_X = 1130;
+  var PIN_MAIN_MIN_Y = 0;
+  var PIN_MAIN_MAX_Y = 565;
+
   var pinsContainer = document.querySelector('.tokyo__pin-map');
   var pinsFragment = document.createDocumentFragment();
+  var pinMain = pinsContainer.querySelector('.pin__main');
+  var formAddress = document.querySelector('#address');
+
+  var pinMainTop;
+  var pinMainLeft;
 
   // Создание пина для каждого объявления
   var fillPinsContainer = function () {
@@ -32,10 +48,54 @@
     }
   };
 
+  var onPinMainMouseDown = function (evt) {
+    evt.preventDefault();
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onPinMainMouseMove = function (moveEvt) {
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      pinMainTop = pinMain.offsetTop - shift.y;
+      pinMainLeft = pinMain.offsetLeft - shift.x;
+
+      if (pinMainLeft >= PIN_MAIN_MIN_X && pinMainLeft <= PIN_MAIN_MAX_X && pinMainTop >= PIN_MAIN_MIN_Y && pinMainTop <= PIN_MAIN_MAX_Y) {
+        pinMain.style.top = pinMainTop + 'px';
+        pinMain.style.left = pinMainLeft + 'px';
+
+        // Записываем в поле адреса координаты, на которые пин указывает острым концом
+        formAddress.value = 'x: ' + (pinMainLeft - PIN_WIDTH / 2) + ', y: ' + (pinMainTop - PIN_HEIGHT);
+      }
+    };
+
+    var onPinMainMouseUp = function () {
+      document.removeEventListener('mousemove', onPinMainMouseMove);
+
+      document.removeEventListener('mouseup', onPinMainMouseUp);
+    };
+
+    document.addEventListener('mousemove', onPinMainMouseMove);
+
+    document.addEventListener('mouseup', onPinMainMouseUp);
+  };
+
   // Заполняем карту пинами
   fillPinsContainer();
 
   pinsContainer.addEventListener('click', onOpenDialogClick);
 
   pinsContainer.addEventListener('keydown', onOpenDialogKeyPress);
+
+  pinMain.addEventListener('mousedown', onPinMainMouseDown);
 })();
