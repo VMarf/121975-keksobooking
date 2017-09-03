@@ -4,16 +4,15 @@
 (function () {
   var FORM_TITLE_MIN_LENGTH = 30;
   var FORM_TITLE_MAX_LENGTH = 100;
-  var FLAT_MIN_PRICE = 1000;
-  var BUNGALO_MIN_PRICE = 0;
-  var HOUSE_MIN_PRICE = 5000;
-  var PALACE_MIN_PRICE = 10000;
+  var FORM_TYPES = ['flat', 'bungalo', 'house', 'palace'];
   var AVAILABLE_GUESTS_NUMBER = {
     '1': ['1'],
     '2': ['1', '2'],
     '3': ['1', '2', '3'],
     '100': ['0']
   };
+  var FORM_MIN_PRICES = [1000, 0, 5000, 10000];
+  var FORM_TIMES = ['12:00', '13:00', '14:00'];
   var FIELD_BORDER = '1px solid #d9d9d3';
   var FIELD_ERROR_BORDER = '2px solid #ff0000';
 
@@ -28,10 +27,10 @@
   var formTimeOut = form.querySelector('#timeout');
   var formSubmit = form.querySelector('.form__submit');
 
-  // Для установки минимальной цены
-  var setMinPrice = function (value) {
-    formPrice.min = value;
-    formPrice.value = value;
+  // Для синхронизации типа жилья и мнимальной цены за ночь
+  var setMinPrice = function (element, value) {
+    element.min = value;
+    element.value = value;
   };
 
   // Для отключения недопустимых значений из выпадающего списка с количеством мест
@@ -53,24 +52,9 @@
     formCapacity.value = maxGuest;
   };
 
-  // Устанавливаем минимальную цену в зависимости от типа жилья
-  var onFormTypeChange = function (evt) {
-    var target = evt.target.value;
-
-    switch (target) {
-      case 'flat':
-        setMinPrice(FLAT_MIN_PRICE);
-        break;
-      case 'bungalo':
-        setMinPrice(BUNGALO_MIN_PRICE);
-        break;
-      case 'house':
-        setMinPrice(HOUSE_MIN_PRICE);
-        break;
-      case 'palace':
-        setMinPrice(PALACE_MIN_PRICE);
-        break;
-    }
+  // Для синхронизации времени заезда и выезда
+  var syncFormValues = function (element, value) {
+    element.value = value;
   };
 
   // Отключаем элементы из выпадающего списка с количеством мест, в зависимости от количества комнат
@@ -126,7 +110,9 @@
 
   window.addEventListener('load', onSetAvailableValues);
 
-  formType.addEventListener('change', onFormTypeChange);
+  window.synchronizeFields(formType, formPrice, FORM_TYPES, FORM_MIN_PRICES, setMinPrice);
+
+  window.synchronizeFields(formTimeIn, formTimeOut, FORM_TIMES, FORM_TIMES, syncFormValues);
 
   formRoomNumber.addEventListener('change', onSetAvailableValues);
 
