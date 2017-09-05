@@ -23,6 +23,8 @@
 
   // Создание пина для каждого объявления
   var fillPinsContainer = function (data) {
+    var similarAds = data;
+
     for (var i = 0; i < data.length; i++) {
       var element = window.pin.createPin(data[i], i);
 
@@ -30,6 +32,8 @@
     }
 
     pinsContainer.appendChild(pinsFragment);
+
+    window.similarAds = similarAds;
   };
 
   var onOpenDialogClick = function (evt) {
