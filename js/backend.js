@@ -22,7 +22,7 @@
 
     setTimeout(function () {
       errorTooltip.remove();
-    }, 3000);
+    }, 4000);
   };
 
   var sendRequest = function (method, url, onLoad, onError, data) {
