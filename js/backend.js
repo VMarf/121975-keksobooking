@@ -8,23 +8,6 @@
   // Адрес, на который отправляем данные
   var POST_URL = 'https://1510.dump.academy/keksobooking';
 
-  var requestError = function (message) {
-    var errorTooltip = document.createElement('div');
-    var errorTooltipText = document.createElement('span');
-
-    errorTooltip.appendChild(errorTooltipText);
-
-    errorTooltip.classList.add('request-error');
-    errorTooltipText.classList.add('request-error__text');
-    errorTooltipText.textContent = message;
-
-    document.body.insertAdjacentElement('afterbegin', errorTooltip);
-
-    setTimeout(function () {
-      errorTooltip.remove();
-    }, 4000);
-  };
-
   var sendRequest = function (method, url, onLoad, onError, data) {
     var xhr = new XMLHttpRequest();
 
@@ -78,9 +61,26 @@
     sendRequest('POST', POST_URL, onLoad, onError, data);
   };
 
+  var showError = function (message) {
+    var errorTooltip = document.createElement('div');
+    var errorTooltipText = document.createElement('span');
+
+    errorTooltip.appendChild(errorTooltipText);
+
+    errorTooltip.classList.add('request-error');
+    errorTooltipText.classList.add('request-error__text');
+    errorTooltipText.textContent = message;
+
+    document.body.insertAdjacentElement('afterbegin', errorTooltip);
+
+    setTimeout(function () {
+      errorTooltip.remove();
+    }, 4000);
+  };
+
   window.backend = {
-    requestError: requestError,
     load: load,
-    save: save
+    save: save,
+    showError: showError
   };
 })();

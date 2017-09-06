@@ -27,11 +27,6 @@
   var formTimeOut = form.querySelector('#timeout');
   var formSubmit = form.querySelector('.form__submit');
 
-  // Сброс формы
-  var resetForm = function () {
-    form.reset();
-  };
-
   // Для синхронизации типа жилья и мнимальной цены за ночь
   var setMinPrice = function (element, value) {
     element.min = value;
@@ -113,10 +108,15 @@
     }
   };
 
+  // Сброс формы
+  var resetForm = function () {
+    form.reset();
+  };
+
   // Для отправки формы на сервер
   var onFormSubmit = function (evt) {
     evt.preventDefault();
-    window.backend.save(resetForm, window.backend.requestError, new FormData(form));
+    window.backend.save(resetForm, window.backend.showError, new FormData(form));
   };
 
   window.addEventListener('load', onSetAvailableValues);

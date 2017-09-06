@@ -96,7 +96,7 @@
   };
 
   // Заполняем карту пинами
-  window.backend.load(fillPinsContainer, window.backend.requestError);
+  window.backend.load(fillPinsContainer, window.backend.showError);
 
   pinsContainer.addEventListener('click', onOpenDialogClick);
 
