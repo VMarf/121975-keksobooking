@@ -61,7 +61,7 @@ window.card = (function () {
   };
 
   var showDialog = function (pin) {
-    var currentAd = window.data[pin.id];
+    var currentAd = window.similarAds[pin.id];
 
     window.pin.activateCurrentPin(pin);
     replaceDialogPanel(currentAd);
