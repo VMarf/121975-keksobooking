@@ -1,5 +1,11 @@
+// TODO: Сделать показ 3ех рандомных пинов на карте по умолчанию
+// TODO: Написать функцию filterByPrice для фильтрации по цене
+// TODO: Дописать функцию filterByFeatures для фильтрации по чекбоксам (+убрать второй цикл)
+// TODO: Написать функцию debounce
+
 'use strict';
 
+// Модуль для фильтрации пинов на карте
 (function () {
   var FILTER_MIN_PRICE = 10000;
   var FILTER_MAX_PRICE = 50000;
@@ -14,15 +20,15 @@
   var filteredPins;
 
   var hideAllPins = function (pins) {
-    for (var i = 0; i < pins.length; i++) {
+    pins.forEach(function (_item, i) {
       pins[i].classList.add('hidden');
-    }
+    });
   };
 
   var showFilteredPins = function (pins) {
-    for (var i = 0; i < pins.length; i++) {
+    pins.forEach(function (_item, i) {
       pins[i].classList.remove('hidden');
-    }
+    });
   };
 
   var filterByProperty = function (filterSelect, property) {
@@ -37,7 +43,7 @@
     };
   };
 
-  // var filterByPrice = function (filterSelect, property) {
+  // var filterByPrice = function () {
   //   return function (item) {
   //     var id = item.id;
   //
@@ -49,21 +55,21 @@
   //   };
   // };
 
-  var filterByFeatures = function () {
-    var features = [];
-
-    for (var i = 0; i < filterFeaturesArray.length; i++) {
-      if (filterFeaturesArray[i].checked) {
-        features.push(filterFeaturesArray[i].value);
-      }
-    }
-
-    for (var i = 0; i < similarAds.length; i++) {
-      return features.every(function (feature) {
-        return window.similarAds[i].offer.features.indexOf(feature) !== -1;
-      });
-    }
-  };
+  // var filterByFeatures = function () {
+  //   var features = [];
+  //
+  //   filterFeaturesArray.forEach(function (_item, i) {
+  //     if (filterFeaturesArray[i].checked) {
+  //       features.push(filterFeaturesArray[i].value);
+  //     }
+  //   });
+  //
+  //   for (var i = 0; i < similarAds.length; i++) {
+  //     return features.every(function (feature) {
+  //       return window.similarAds[i].offer.features.indexOf(feature) !== -1;
+  //     });
+  //   }
+  // };
 
   var onFiltersChange = function () {
     filteredPins = window.pins;
@@ -71,23 +77,16 @@
     // При изменении формы с фильтрами изначально скрываем все пины
     hideAllPins(filteredPins);
 
+    // Фильтруем массив с пинами, пин объявления, которое не подходит, не попадает в filteredPins
     filteredPins = filteredPins.filter(filterByProperty(filterType, 'type'));
     // filteredPins = filteredPins.filter(filterByPrice);
-    // filteredPins = filteredPins.filter(filterByProperty(filterRooms, 'rooms'));
-    // filteredPins = filteredPins.filter(filterByProperty(filterGuests, 'guests'));
+    filteredPins = filteredPins.filter(filterByProperty(filterRooms, 'rooms'));
+    filteredPins = filteredPins.filter(filterByProperty(filterGuests, 'guests'));
     // filteredPins = filteredPins.filter(filterByFeatures);
 
     // После всех фильтраций показываем пины, которые соответствуют фильтрам
     showFilteredPins(filteredPins);
-
-    // console.log(filteredPins);
-
-    console.log(window.similarAds);
-
-    // console.log(window.similarAds[9]);
-
-    // console.log(window.similarAds[9].offer.features.indexOf(['wifi']) !== -1);
   };
 
-  // filters.addEventListener('change', onFiltersChange);
+  filters.addEventListener('change', onFiltersChange);
 })();

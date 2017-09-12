@@ -25,21 +25,11 @@
   var fillPinsContainer = function (data) {
     var pins;
 
-    // for (var i = 0; i < data.length; i++) {
-    //   var element = window.pin.createPin(data[i], i);
-    //
-    //   pinsFragment.appendChild(element);
-    // }
-
-    //
-
     data.forEach(function (_item, i) {
       var element = window.pin.createPin(data[i], i);
 
       pinsFragment.appendChild(element);
     });
-
-    //
 
     pinsContainer.appendChild(pinsFragment);
 
