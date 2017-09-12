@@ -1,6 +1,4 @@
-// TODO: Сделать показ 3ех рандомных пинов на карте по умолчанию
 // TODO: Написать функцию filterByPrice для фильтрации по цене
-// TODO: Дописать функцию filterByFeatures для фильтрации по чекбоксам (+убрать второй цикл)
 
 'use strict';
 
@@ -54,21 +52,20 @@
   //   };
   // };
 
-  // var filterByFeatures = function () {
-  //   var features = [];
-  //
-  //   filterFeaturesArray.forEach(function (_item, i) {
-  //     if (filterFeaturesArray[i].checked) {
-  //       features.push(filterFeaturesArray[i].value);
-  //     }
-  //   });
-  //
-  //   for (var i = 0; i < similarAds.length; i++) {
-  //     return features.every(function (feature) {
-  //       return window.similarAds[i].offer.features.indexOf(feature) !== -1;
-  //     });
-  //   }
-  // };
+  var filterByFeatures = function (item) {
+    var features = [];
+    var id = item.id;
+
+    filterFeaturesArray.forEach(function (_item, i) {
+      if (filterFeaturesArray[i].checked) {
+        features.push(filterFeaturesArray[i].value);
+      }
+    });
+
+    return features.every(function (feature) {
+      return window.similarAds[id].offer.features.indexOf(feature) !== -1;
+    });
+  };
 
   var updateFilteredPins = function () {
     filteredPins = window.pins;
@@ -81,10 +78,12 @@
     // filteredPins = filteredPins.filter(filterByPrice);
     filteredPins = filteredPins.filter(filterByProperty(filterRooms, 'rooms'));
     filteredPins = filteredPins.filter(filterByProperty(filterGuests, 'guests'));
-    // filteredPins = filteredPins.filter(filterByFeatures);
+    filteredPins = filteredPins.filter(filterByFeatures);
 
     // После всех фильтраций показываем пины, которые соответствуют фильтрам
     showFilteredPins(filteredPins);
+
+    console.log(filteredPins);
   };
 
   var onFiltersChange = function () {
