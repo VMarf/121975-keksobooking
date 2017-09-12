@@ -23,17 +23,32 @@
 
   // Создание пина для каждого объявления
   var fillPinsContainer = function (data) {
-    var similarAds = data;
+    var pins;
 
-    for (var i = 0; i < data.length; i++) {
+    // for (var i = 0; i < data.length; i++) {
+    //   var element = window.pin.createPin(data[i], i);
+    //
+    //   pinsFragment.appendChild(element);
+    // }
+
+    //
+
+    data.forEach(function (_item, i) {
       var element = window.pin.createPin(data[i], i);
 
       pinsFragment.appendChild(element);
-    }
+    });
+
+    //
 
     pinsContainer.appendChild(pinsFragment);
 
-    window.similarAds = similarAds;
+    pins = pinsContainer.querySelectorAll('.pin:not(.pin__main)');
+
+    // Превращаем коллекцию пинов в массив для работы с фильтрами
+    window.pins = Array.prototype.slice.call(pins, 0);
+
+    window.similarAds = data;
   };
 
   var onOpenDialogClick = function (evt) {

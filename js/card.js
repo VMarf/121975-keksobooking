@@ -44,6 +44,7 @@ window.card = (function () {
     adCheckInTime.textContent = 'Заезд после ' + adInfo.offer.checkin + ' , выезд до ' + adInfo.offer.checkout;
     adDescription.textContent = adInfo.offer.description;
 
+    // @TODO: Заменить на forEach
     for (var i = 0; i < adInfo.offer.features.length; i++) {
       adFeatures.appendChild(createFeature(adInfo.offer.features[i]));
     }

@@ -12,7 +12,7 @@
     var xhr = new XMLHttpRequest();
 
     xhr.responseType = 'json';
-    xhr.timeout = 2000;
+    xhr.timeout = 3000;
 
     xhr.addEventListener('load', function () {
       var error;
