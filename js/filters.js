@@ -1,7 +1,6 @@
 // TODO: Сделать показ 3ех рандомных пинов на карте по умолчанию
 // TODO: Написать функцию filterByPrice для фильтрации по цене
 // TODO: Дописать функцию filterByFeatures для фильтрации по чекбоксам (+убрать второй цикл)
-// TODO: Написать функцию debounce
 
 'use strict';
 
@@ -71,7 +70,7 @@
   //   }
   // };
 
-  var onFiltersChange = function () {
+  var updateFilteredPins = function () {
     filteredPins = window.pins;
 
     // При изменении формы с фильтрами изначально скрываем все пины
@@ -86,6 +85,10 @@
 
     // После всех фильтраций показываем пины, которые соответствуют фильтрам
     showFilteredPins(filteredPins);
+  };
+
+  var onFiltersChange = function () {
+    window.debounce(updateFilteredPins);
   };
 
   filters.addEventListener('change', onFiltersChange);
