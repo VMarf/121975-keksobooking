@@ -7,6 +7,9 @@ window.pin = (function () {
   var PIN_WIDTH = 56;
   var PIN_HEIGHT = 75;
 
+  // Сколько пинов отображаем по умолчанию
+  var DEFAULT_SHOWING_PINS = 3;
+
   var activePin;
 
   // Создание метки для карты, left и top задаются пину таким образом, чтобы острый конец указывал точно на полученные координаты
@@ -42,9 +45,24 @@ window.pin = (function () {
     activePin = pin;
   };
 
+  var hideRandomPins = function (pins) {
+    var newPinsArray = window.util.shuffleArray(pins);
+
+    // Скрываем все пины
+    newPinsArray.forEach(function (item) {
+      item.classList.add('hidden');
+    });
+
+    // Показываем нужное количество
+    for (var i = 0; i < DEFAULT_SHOWING_PINS; i++) {
+      newPinsArray[i].classList.remove('hidden');
+    }
+  };
+
   return {
     createPin: createPin,
     deactivatePin: deactivatePin,
-    activateCurrentPin: activateCurrentPin
+    activateCurrentPin: activateCurrentPin,
+    hideRandomPins: hideRandomPins
   };
 })();

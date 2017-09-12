@@ -1,5 +1,3 @@
-// TODO: Сделать показ 3ех рандомных пинов на карте по умолчанию
-
 'use strict';
 
 // Модуль, который работает с картой
@@ -35,11 +33,17 @@
 
     pinsContainer.appendChild(pinsFragment);
 
+    // Получаем коллекцию пинов
     pins = pinsContainer.querySelectorAll('.pin:not(.pin__main)');
 
-    // Превращаем коллекцию пинов в массив для работы с фильтрами
-    window.pins = Array.prototype.slice.call(pins, 0);
+    // Превращаем коллекцию пинов в массив
+    pins = Array.prototype.slice.call(pins, 0);
 
+    // По умолчанию отображаем не все пины, а лишь небольшое количество
+    window.pin.hideRandomPins(pins);
+
+    // Отправляем массивы с пинами и данными в глобальную область, для модуля с фильтрами
+    window.pins = pins;
     window.similarAds = data;
   };
 

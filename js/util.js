@@ -25,17 +25,13 @@
   var shuffleArray = function (array) {
     var newArray = array.slice();
 
-    for (var i = newArray.length - 1; i > 0; i--) {
+    newArray.forEach(function (_item, i) {
       var randomArrayIndex = getRandomArrayIndex(newArray);
       var randomArrayIndexValue = newArray[randomArrayIndex];
 
-      if (randomArrayIndex === i) {
-        continue;
-      }
-
       newArray[randomArrayIndex] = newArray[i];
       newArray[i] = randomArrayIndexValue;
-    }
+    });
 
     return newArray;
   };
