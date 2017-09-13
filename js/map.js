@@ -3,10 +3,6 @@
 // Модуль, который работает с картой
 (function () {
 
-  // Размеры пина
-  var PIN_WIDTH = 56;
-  var PIN_HEIGHT = 75;
-
   // Минимальные и максимальные координаты главного пина
   var PIN_MAIN_MIN_X = 260;
   var PIN_MAIN_MAX_X = 1090;
@@ -24,7 +20,7 @@
     var pins;
 
     data.forEach(function (_item, i) {
-      var element = window.pin.createPin(data[i], i);
+      var element = window.pin.create(data[i], i);
 
       pinsFragment.appendChild(element);
     });
@@ -89,7 +85,7 @@
         pinMain.style.zIndex = 10;
 
         // Записываем в поле адреса координаты, на которые пин указывает острым концом
-        window.form.formAddress.value = 'x: ' + (pinMainLeft - PIN_WIDTH / 2) + ', y: ' + (pinMainTop - PIN_HEIGHT);
+        window.form.formAddress.value = 'x: ' + (pinMainLeft - window.pin.width / 2) + ', y: ' + (pinMainTop - window.pin.height);
       }
     };
 

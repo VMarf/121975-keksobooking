@@ -60,9 +60,11 @@
   };
 
   window.pin = {
-    createPin: createPin,
-    deactivatePin: deactivatePin,
-    activateCurrentPin: activateCurrentPin,
+    width: PIN_WIDTH,
+    height: PIN_HEIGHT,
+    create: createPin,
+    deactivate: deactivatePin,
+    activateCurrent: activateCurrentPin,
     hideRandomPins: hideRandomPins
   };
 })();

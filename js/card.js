@@ -63,7 +63,7 @@
   var showDialog = function (pin) {
     var currentAd = window.similarAds[pin.id];
 
-    window.pin.activateCurrentPin(pin);
+    window.pin.activateCurrent(pin);
     replaceDialogPanel(currentAd);
     offerDialog.classList.remove('hidden');
 
@@ -71,7 +71,7 @@
   };
 
   var hideDialog = function () {
-    window.pin.deactivatePin();
+    window.pin.deactivate();
     offerDialog.classList.add('hidden');
 
     document.removeEventListener('keydown', onCloseDialogEscPress);
