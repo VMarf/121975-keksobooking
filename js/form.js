@@ -11,7 +11,7 @@
     '3': ['1', '2', '3'],
     '100': ['0']
   };
-  var FORM_MIN_PRICES = [1000, 0, 5000, 10000];
+  var FORM_MIN_PRICES = [1000, 0, 10000, 10000];
   var FORM_TIMES = ['12:00', '13:00', '14:00'];
   var FIELD_BORDER = '1px solid #d9d9d3';
   var FIELD_ERROR_BORDER = '2px solid #ff0000';
@@ -111,6 +111,8 @@
   // Сброс формы
   var resetForm = function () {
     form.reset();
+
+    setAvailableValues(formRoomNumber.value);
   };
 
   // Для отправки формы на сервер
@@ -138,4 +140,8 @@
   formSubmit.addEventListener('click', onFormAddressValid);
 
   form.addEventListener('submit', onFormSubmit);
+
+  window.form = {
+    formAddress: formAddress
+  };
 })();

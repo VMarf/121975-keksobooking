@@ -1,7 +1,7 @@
 'use strict';
 
 // Модуль для отрисовки пина
-window.pin = (function () {
+(function () {
 
   // Размеры пина
   var PIN_WIDTH = 56;
@@ -59,7 +59,7 @@ window.pin = (function () {
     }
   };
 
-  return {
+  window.pin = {
     createPin: createPin,
     deactivatePin: deactivatePin,
     activateCurrentPin: activateCurrentPin,

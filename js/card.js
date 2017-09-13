@@ -1,18 +1,18 @@
 'use strict';
 
 // Модуль для отрисовки элемента на карточке
-window.card = (function () {
-  var offerDialog = document.querySelector('#offer-dialog');
-  var dialogAvatar = offerDialog.querySelector('.dialog__title img');
-  var dialogCloseBtn = offerDialog.querySelector('.dialog__close');
-  var oldDialogPanel = offerDialog.querySelector('.dialog__panel');
-  var dialogPanelTemplate = document.querySelector('#lodge-template').content;
-
+(function () {
   var AD_TYPE_MAP = {
     'flat': 'Квартира',
     'bungalo': 'Бунгало',
     'house': 'Дом'
   };
+
+  var offerDialog = document.querySelector('#offer-dialog');
+  var dialogAvatar = offerDialog.querySelector('.dialog__title img');
+  var dialogCloseBtn = offerDialog.querySelector('.dialog__close');
+  var oldDialogPanel = offerDialog.querySelector('.dialog__panel');
+  var dialogPanelTemplate = document.querySelector('#lodge-template').content;
 
   // Создание элемента списка достоинств в объявлении
   var createFeature = function (featuresArrayValue) {
@@ -97,7 +97,8 @@ window.card = (function () {
 
   dialogCloseBtn.addEventListener('keydown', onDialogCloseBtnKeyPress);
 
-  return {
-    showDialog: showDialog
+  window.card = {
+    showDialog: showDialog,
+    hideDialog: hideDialog
   };
 })();

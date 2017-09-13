@@ -15,14 +15,14 @@
   var filteredPins;
 
   var hideAllPins = function (pins) {
-    pins.forEach(function (_item, i) {
-      pins[i].classList.add('hidden');
+    pins.forEach(function (pin) {
+      pin.classList.add('hidden');
     });
   };
 
   var showFilteredPins = function (pins) {
-    pins.forEach(function (_item, i) {
-      pins[i].classList.remove('hidden');
+    pins.forEach(function (pin) {
+      pin.classList.remove('hidden');
     });
   };
 
@@ -78,6 +78,9 @@
 
     // При изменении формы с фильтрами изначально скрываем все пины
     hideAllPins(filteredPins);
+
+    // И скрываем блок с объявлением
+    window.card.hideDialog();
 
     // Фильтруем массив с пинами, пин объявления, которое не подходит, не попадает в filteredPins
     filteredPins = filteredPins.filter(filterByProperty(filterType, 'type'));

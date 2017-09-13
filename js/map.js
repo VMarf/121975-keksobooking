@@ -16,8 +16,6 @@
   var pinsContainer = document.querySelector('.tokyo__pin-map');
   var pinsFragment = document.createDocumentFragment();
   var pinMain = pinsContainer.querySelector('.pin__main');
-  var formAddress = document.querySelector('#address');
-
   var pinMainTop;
   var pinMainLeft;
 
@@ -91,7 +89,7 @@
         pinMain.style.zIndex = 10;
 
         // Записываем в поле адреса координаты, на которые пин указывает острым концом
-        formAddress.value = 'x: ' + (pinMainLeft - PIN_WIDTH / 2) + ', y: ' + (pinMainTop - PIN_HEIGHT);
+        window.form.formAddress.value = 'x: ' + (pinMainLeft - PIN_WIDTH / 2) + ', y: ' + (pinMainTop - PIN_HEIGHT);
       }
     };
 
