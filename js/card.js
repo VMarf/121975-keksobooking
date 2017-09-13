@@ -68,6 +68,10 @@
     offerDialog.classList.remove('hidden');
 
     document.addEventListener('keydown', onCloseDialogEscPress);
+
+    dialogCloseBtn.addEventListener('click', onDialogCloseBtnClick);
+
+    dialogCloseBtn.addEventListener('keydown', onDialogCloseBtnKeyPress);
   };
 
   var hideDialog = function () {
@@ -75,6 +79,10 @@
     offerDialog.classList.add('hidden');
 
     document.removeEventListener('keydown', onCloseDialogEscPress);
+
+    dialogCloseBtn.removeEventListener('click', onDialogCloseBtnClick);
+
+    dialogCloseBtn.removeEventListener('keydown', onDialogCloseBtnKeyPress);
   };
 
   var onDialogCloseBtnClick = function () {
@@ -92,10 +100,6 @@
       hideDialog();
     }
   };
-
-  dialogCloseBtn.addEventListener('click', onDialogCloseBtnClick);
-
-  dialogCloseBtn.addEventListener('keydown', onDialogCloseBtnKeyPress);
 
   window.card = {
     showDialog: showDialog,
