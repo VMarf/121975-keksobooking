@@ -30,11 +30,7 @@
     return function (item) {
       var id = item.id;
 
-      if (filterSelect.value === 'any' || filterSelect.value === (window.similarAds[id].offer[property] + '')) {
-        return true;
-      } else {
-        return false;
-      }
+      return filterSelect.value === 'any' || filterSelect.value === (window.similarAds[id].offer[property] + '');
     };
   };
 

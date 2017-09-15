@@ -2,6 +2,7 @@
 
 // Модуль для отрисовки элемента на карточке
 (function () {
+  var RUBLE_SYMBOL = String.fromCharCode(8381);
   var AD_TYPE_MAP = {
     'flat': 'Квартира',
     'bungalo': 'Бунгало',
@@ -38,7 +39,7 @@
 
     adTitle.textContent = adInfo.offer.title;
     adAddress.textContent = adInfo.offer.address;
-    adPrice.textContent = adInfo.offer.price + '&#x20bd;/ночь';
+    adPrice.textContent = adInfo.offer.price + RUBLE_SYMBOL + '/ночь';
     adType.textContent = AD_TYPE_MAP[adInfo.offer.type];
     adRoomsAndGuests.textContent = 'Для ' + adInfo.offer.guests + ' гостей в ' + adInfo.offer.rooms + ' комнатах';
     adCheckInTime.textContent = 'Заезд после ' + adInfo.offer.checkin + ' , выезд до ' + adInfo.offer.checkout;
