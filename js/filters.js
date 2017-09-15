@@ -30,14 +30,14 @@
     return function (item) {
       var id = item.id;
 
-      return filterSelect.value === 'any' || filterSelect.value === (window.similarAds[id].offer[property] + '');
+      return filterSelect.value === 'any' || filterSelect.value === String(window.similarAds[id].offer[property]);
     };
   };
 
   var filterByPrice = function (filterSelect) {
     return function (item) {
       var id = item.id;
-      var adPrice = window.similarAds[id].offer.price + '';
+      var adPrice = String(window.similarAds[id].offer.price);
 
       switch (filterSelect.value) {
         case 'any':
